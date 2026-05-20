@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, MousePointer, MousePointerClick } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import '../UIUXPro.css';
 import LiquidBackground from './LiquidBackground';
@@ -28,26 +28,16 @@ const InteractiveBackground = () => {
 
     const isDark = theme === 'dark';
     
-    // Luxury color palette: warm champagne gold & amber tones
-    const goldColors = isDark 
-      ? ['rgba(197, 168, 128, 0.25)', 'rgba(230, 210, 180, 0.18)', 'rgba(165, 130, 80, 0.15)']
-      : ['rgba(197, 168, 128, 0.18)', 'rgba(230, 210, 180, 0.12)', 'rgba(165, 130, 80, 0.1)'];
-
-    // Initialize particles with 3D positions (X, Y, Z depth)
-    const COUNT = 45; // Muted, clean count (not busy)
-    const pts = [];
-    for (let i = 0; i < COUNT; i++) {
-      pts.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        z: Math.random() * 2.0 + 0.5, // Z depth: smaller z = closer (larger), larger z = far (smaller)
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        r: Math.random() * 2.5 + 1.2,
-        color: goldColors[Math.floor(Math.random() * goldColors.length)],
-      });
-    }
-    particles.current = pts;
+    // Create floating dust particles with varying depth (Z)
+    particles.current = Array.from({ length: 45 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      z: Math.random() * 1.5 + 0.5, // Depth scaling factor
+      radius: Math.random() * 1.8 + 0.6,
+      baseSpeed: Math.random() * 0.15 + 0.05,
+      angle: Math.random() * Math.PI * 2,
+      opacity: Math.random() * 0.4 + 0.1
+    }));
 
     const onMove = (e) => {
       mouse.current.tx = e.clientX;
@@ -58,55 +48,57 @@ const InteractiveBackground = () => {
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
       
-      // Smooth mouse lag
-      mouse.current.x += (mouse.current.tx - mouse.current.x) * 0.05;
-      mouse.current.y += (mouse.current.ty - mouse.current.y) * 0.05;
-      const mx = mouse.current.x;
-      const my = mouse.current.y;
+      // Interpolate mouse coordinates for fluid tracking
+      const m = mouse.current;
+      if (m.x === -1000) {
+        m.x = m.tx;
+        m.y = m.ty;
+      } else {
+        m.x += (m.tx - m.x) * 0.08;
+        m.y += (m.ty - m.y) * 0.08;
+      }
 
-      for (let i = 0; i < pts.length; i++) {
-        const p = pts[i];
-        
-        // Dynamic drift + mouse influence
-        const dx = p.x - mx;
-        const dy = p.y - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
+      particles.current.forEach((p) => {
+        // Drift movement
+        p.angle += 0.002;
+        p.x += Math.cos(p.angle) * p.baseSpeed;
+        p.y += Math.sin(p.angle) * p.baseSpeed - 0.08; // slow upward drift
+
+        // Loop screen borders
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = h;
+
         // Gentle repulsion from cursor
-        if (dist < 220) {
-          const force = (220 - dist) / 220;
-          p.vx += (dx / dist) * force * 0.06 / p.z;
-          p.vy += (dy / dist) * force * 0.06 / p.z;
+        const dx = p.x - m.x;
+        const dy = p.y - m.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        let rx = 0, ry = 0;
+        if (dist < 180) {
+          const force = (180 - dist) / 180 * 12;
+          rx = (dx / dist) * force * p.z;
+          ry = (dy / dist) * force * p.z;
         }
 
-        // Apply velocities & friction
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= 0.96;
-        p.vy *= 0.96;
+        // Apply Z-axis scaling to size and opacity for realistic depth
+        const finalX = p.x + rx;
+        const finalY = p.y + ry;
+        const size = p.radius * p.z;
+        const alpha = p.opacity * p.z * (isDark ? 1 : 0.65);
 
-        // Wrap edges
-        if (p.x < -50) p.x = w + 50;
-        if (p.x > w + 50) p.x = -50;
-        if (p.y < -50) p.y = h + 50;
-        if (p.y > h + 50) p.y = -50;
-
-        // Render as soft glowing 3D dust spheres (Size based on Z-depth)
-        const size = p.r / p.z;
-        const opacityMultiplier = Math.max(0, 1 - (p.z / 2.5)); // Fades as it gets further away
-        
         ctx.beginPath();
+        ctx.arc(finalX, finalY, size, 0, Math.PI * 2);
         
-        // Radial gradient for glow look
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 2.5);
-        grad.addColorStop(0, p.color);
-        grad.addColorStop(1, 'transparent');
-        
-        ctx.arc(p.x, p.y, size * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.globalAlpha = opacityMultiplier;
+        // Luxury champagne gold color theme for drifting dust motes
+        ctx.fillStyle = isDark 
+          ? `rgba(197, 168, 128, ${alpha})` 
+          : `rgba(158, 127, 83, ${alpha * 0.85})`;
+        ctx.shadowBlur = size * 1.5;
+        ctx.shadowColor = 'rgba(197, 168, 128, 0.2)';
         ctx.fill();
-      }
+      });
+      ctx.shadowBlur = 0;
       ctx.globalAlpha = 1.0;
 
       raf.current = requestAnimationFrame(draw);
@@ -124,43 +116,78 @@ const InteractiveBackground = () => {
 };
 
 const CustomCursor = () => {
+  const { cursorMode } = useTheme();
   const dotRef = useRef(null);
   const ringRef = useRef(null);
 
   useEffect(() => {
+    if (cursorMode === 'normal') return;
+
     const dot = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
-    let hovering = false;
+    // Center coordinates
+    gsap.set(dot, { xPercent: -50, yPercent: -50 });
+    gsap.set(ring, { xPercent: -50, yPercent: -50 });
+
     const move = (e) => {
-      gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.08, overwrite: true });
-      gsap.to(ring, { x: e.clientX, y: e.clientY, duration: 0.25, overwrite: true });
+      gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.08, overwrite: 'auto' });
+      gsap.to(ring, { x: e.clientX, y: e.clientY, duration: 0.22, overwrite: 'auto' });
     };
+
     const over = (e) => {
       const t = e.target;
+      if (!t) return;
+
       const isText = t.childNodes.length === 1 && t.childNodes[0].nodeType === 3;
-      const hit = t.tagName === 'BUTTON' || t.tagName === 'A' || t.closest('button') || t.closest('a') || t.classList.contains('clickable') || isText;
+      const isImg = t.tagName === 'IMG' || t.tagName === 'SVG' || t.closest('svg') || t.closest('img') || t.classList.contains('watch-graphics-container');
+      const isInteractive = t.tagName === 'BUTTON' || t.tagName === 'A' || t.closest('button') || t.closest('a') || t.classList.contains('clickable');
+      const isHeading = t.tagName.match(/^H[1-6]$/);
       
-      if (hit && !hovering) {
-        hovering = true;
-        gsap.to(dot, { scale: 0.1, opacity: 0, duration: 0.2 });
+      if (isInteractive) {
+        // High-contrast clean white inversion circle for buttons/clickable items
+        gsap.to(dot, { scale: 0, opacity: 0, duration: 0.2 });
         gsap.to(ring, { 
           scale: 3.5, 
-          backgroundColor: 'white', 
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderColor: 'transparent',
           borderWidth: '0px',
-          duration: 0.35,
-          ease: 'power4.out'
+          duration: 0.3,
+          ease: 'power3.out'
         });
-      } else if (!hit && hovering) {
-        hovering = false;
-        gsap.to(dot, { scale: 1, opacity: 1, duration: 0.25 });
+      } else if (isImg) {
+        // Vibrant neon cyan color shift when hovering over images/watch graphics
+        gsap.to(dot, { scale: 1.4, opacity: 0.9, backgroundColor: '#00f2fe', duration: 0.2 });
+        gsap.to(ring, { 
+          scale: 2.2, 
+          backgroundColor: 'rgba(0, 242, 254, 0.15)',
+          borderColor: '#00f2fe',
+          borderWidth: '2px',
+          duration: 0.3,
+          ease: 'power3.out'
+        });
+      } else if (isHeading || isText) {
+        // Premium champagne gold color focus when reading headings or dense text
+        gsap.to(dot, { scale: 0.6, opacity: 1, backgroundColor: 'var(--primary)', duration: 0.25 });
+        gsap.to(ring, { 
+          scale: 1.8, 
+          backgroundColor: 'transparent',
+          borderColor: 'var(--primary)',
+          borderWidth: '3px',
+          duration: 0.3,
+          ease: 'power3.out'
+        });
+      } else {
+        // Restores default luxury gold styling
+        gsap.to(dot, { scale: 1, opacity: 1, backgroundColor: 'var(--primary)', duration: 0.25 });
         gsap.to(ring, { 
           scale: 1, 
           backgroundColor: 'transparent',
+          borderColor: 'var(--primary)',
           borderWidth: '2px',
-          duration: 0.35,
-          ease: 'power4.out'
+          duration: 0.3,
+          ease: 'power3.out'
         });
       }
     };
@@ -171,7 +198,9 @@ const CustomCursor = () => {
       window.removeEventListener('mousemove', move);
       window.removeEventListener('mouseover', over);
     };
-  }, []);
+  }, [cursorMode]);
+
+  if (cursorMode === 'normal') return null;
 
   return (
     <>
@@ -217,12 +246,55 @@ const ThemeToggle = () => {
   );
 };
 
+const CursorToggle = () => {
+  const { cursorMode, toggleCursorMode } = useTheme();
+  return (
+    <button 
+      className="cursor-toggle clickable" 
+      onClick={toggleCursorMode} 
+      aria-label="Toggle Cursor Mode"
+      style={{
+        position: 'fixed',
+        top: '84px',
+        right: '24px',
+        zIndex: 99995,
+        width: '48px',
+        height: '48px',
+        borderRadius: '50%',
+        background: 'var(--bg-card)',
+        border: 'var(--glass-border)',
+        color: 'var(--text-main)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        backdropFilter: 'blur(12px)',
+        boxShadow: 'var(--shadow-3d)',
+        transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'scale(1.15)';
+        e.currentTarget.style.boxShadow = '0 0 20px var(--glow-color), var(--shadow-hover)';
+        e.currentTarget.style.background = 'var(--bg-glass)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'scale(1)';
+        e.currentTarget.style.boxShadow = 'var(--shadow-3d)';
+        e.currentTarget.style.background = 'var(--bg-card)';
+      }}
+    >
+      {cursorMode === 'fancy' ? <MousePointerClick size={18} /> : <MousePointer size={18} />}
+    </button>
+  );
+};
+
 const UIUXProProvider = ({ children }) => {
   return (
     <>
       <div className="noise-overlay" />
       <CustomCursor />
       <ThemeToggle />
+      <CursorToggle />
       <LiquidBackground />
       <InteractiveBackground />
       {children}

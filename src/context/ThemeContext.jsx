@@ -9,6 +9,11 @@ export const ThemeProvider = ({ children }) => {
     return 'dark'; // default to dark for premium look
   });
 
+  const [cursorMode, setCursorMode] = useState(() => {
+    const saved = localStorage.getItem('watch-cursor-mode');
+    return saved || 'fancy';
+  });
+
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'dark') {
@@ -21,12 +26,26 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem('watch-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (cursorMode === 'normal') {
+      root.classList.add('normal-cursor');
+    } else {
+      root.classList.remove('normal-cursor');
+    }
+    localStorage.setItem('watch-cursor-mode', cursorMode);
+  }, [cursorMode]);
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
+  const toggleCursorMode = () => {
+    setCursorMode((prev) => (prev === 'fancy' ? 'normal' : 'fancy'));
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, cursorMode, toggleCursorMode }}>
       {children}
     </ThemeContext.Provider>
   );
