@@ -168,51 +168,101 @@ export default function WatchCustomizer({ activeModel, onClose }) {
                   <stop offset="50%" stopColor="#52525b" />
                   <stop offset="100%" stopColor="#27272a" />
                 </linearGradient>
+                
+                {/* Dynamic Accent Gradients using overlay highlights */}
+                <linearGradient id="c-accent-light" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+                  <stop offset="100%" stopColor={selectedAccent.color} />
+                </linearGradient>
+                <linearGradient id="c-accent-dark" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor={selectedAccent.color} />
+                  <stop offset="100%" stopColor="#000000" stopOpacity="0.45" />
+                </linearGradient>
+
+                {/* Strap shading overlay for 3D cylinder effect */}
+                <linearGradient id="c-strap-shading" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#000000" stopOpacity="0.55" />
+                  <stop offset="25%" stopColor="#000000" stopOpacity="0.1" />
+                  <stop offset="50%" stopColor="#ffffff" stopOpacity="0.18" />
+                  <stop offset="75%" stopColor="#000000" stopOpacity="0.1" />
+                  <stop offset="100%" stopColor="#000000" stopOpacity="0.55" />
+                </linearGradient>
+                
+                {/* Dial gradient */}
+                <radialGradient id="c-dial-grad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#18181c" />
+                  <stop offset="80%" stopColor="#0b0b0e" />
+                  <stop offset="100%" stopColor="#020203" />
+                </radialGradient>
+
+                {/* Filter for shadows */}
+                <filter id="c-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="#000000" floodOpacity="0.6" />
+                </filter>
               </defs>
 
               {/* Strap rendering */}
-              {selectedStrap.type === 'leather' && (
-                <>
-                  <rect x="86" y="15" width="48" height="65" rx="3" fill={selectedStrap.color} />
-                  <rect x="86" y="200" width="48" height="65" rx="3" fill={selectedStrap.color} />
-                  <line x1="89" y1="15" x2="89" y2="80" stroke={selectedStrap.stroke} strokeDasharray="3,2" />
-                  <line x1="131" y1="15" x2="131" y2="80" stroke={selectedStrap.stroke} strokeDasharray="3,2" />
-                  <line x1="89" y1="200" x2="89" y2="265" stroke={selectedStrap.stroke} strokeDasharray="3,2" />
-                  <line x1="131" y1="200" x2="131" y2="265" stroke={selectedStrap.stroke} strokeDasharray="3,2" />
-                </>
-              )}
+              <g filter="url(#c-shadow)">
+                {selectedStrap.type === 'leather' && (
+                  <g>
+                    <rect x="86" y="15" width="48" height="65" rx="3" fill={selectedStrap.color} />
+                    <rect x="86" y="200" width="48" height="65" rx="3" fill={selectedStrap.color} />
+                    {/* Cylindrical shading */}
+                    <rect x="86" y="15" width="48" height="65" rx="3" fill="url(#c-strap-shading)" />
+                    <rect x="86" y="200" width="48" height="65" rx="3" fill="url(#c-strap-shading)" />
+                    {/* Stitching lines */}
+                    <path d="M 89,15 L 89,80" stroke={selectedStrap.stroke} strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                    <path d="M 131,15 L 131,80" stroke={selectedStrap.stroke} strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                    <path d="M 89,200 L 89,265" stroke={selectedStrap.stroke} strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                    <path d="M 131,200 L 131,265" stroke={selectedStrap.stroke} strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                  </g>
+                )}
 
-              {selectedStrap.type === 'bracelet' && (
-                <>
-                  {/* Outer oyster links */}
-                  <rect x="86" y="15" width="48" height="65" fill={selectedStrap.color} />
-                  <rect x="86" y="200" width="48" height="65" fill={selectedStrap.color} />
-                  {/* Oyster rows */}
-                  <line x1="102" y1="15" x2="102" y2="80" stroke={selectedStrap.stroke} strokeWidth="1" />
-                  <line x1="118" y1="15" x2="118" y2="80" stroke={selectedStrap.stroke} strokeWidth="1" />
-                  <line x1="102" y1="200" x2="102" y2="265" stroke={selectedStrap.stroke} strokeWidth="1" />
-                  <line x1="118" y1="200" x2="118" y2="265" stroke={selectedStrap.stroke} strokeWidth="1" />
-                  {/* horizontal link divisions */}
-                  {[25, 40, 55, 70, 210, 225, 240, 255].map((y) => (
-                    <line key={y} x1="86" y1={y} x2="134" y2={y} stroke={selectedStrap.stroke} strokeWidth="0.75" />
-                  ))}
-                </>
-              )}
+                {selectedStrap.type === 'bracelet' && (
+                  <g>
+                    <rect x="86" y="15" width="48" height="65" fill={selectedStrap.color} />
+                    <rect x="86" y="200" width="48" height="65" fill={selectedStrap.color} />
+                    {/* Cylindrical shading */}
+                    <rect x="86" y="15" width="48" height="65" fill="url(#c-strap-shading)" />
+                    <rect x="86" y="200" width="48" height="65" fill="url(#c-strap-shading)" />
+                    {/* Bracelet Link Lines */}
+                    <line x1="102" y1="15" x2="102" y2="80" stroke={selectedStrap.stroke} strokeWidth="1" strokeOpacity="0.5" />
+                    <line x1="118" y1="15" x2="118" y2="80" stroke={selectedStrap.stroke} strokeWidth="1" strokeOpacity="0.5" />
+                    <line x1="102" y1="200" x2="102" y2="265" stroke={selectedStrap.stroke} strokeWidth="1" strokeOpacity="0.5" />
+                    <line x1="118" y1="200" x2="118" y2="265" stroke={selectedStrap.stroke} strokeWidth="1" strokeOpacity="0.5" />
+                    {[25, 40, 55, 70, 210, 225, 240, 255].map((y) => (
+                      <line key={y} x1="86" y1={y} x2="134" y2={y} stroke={selectedStrap.stroke} strokeWidth="0.75" strokeOpacity="0.5" />
+                    ))}
+                  </g>
+                )}
 
-              {selectedStrap.type === 'nato' && (
-                <>
-                  <rect x="88" y="5" width="44" height="270" fill={selectedStrap.color} />
-                  <line x1="110" y1="5" x2="110" y2="275" stroke="#3f3f46" strokeWidth="6" />
-                  <line x1="94" y1="5" x2="94" y2="275" stroke="rgba(255,255,255,0.06)" />
-                  <line x1="126" y1="5" x2="126" y2="275" stroke="rgba(255,255,255,0.06)" />
-                </>
-              )}
+                {selectedStrap.type === 'nato' && (
+                  <g>
+                    <rect x="88" y="5" width="44" height="270" fill={selectedStrap.color} />
+                    <rect x="88" y="5" width="44" height="270" fill="url(#c-strap-shading)" />
+                    <line x1="110" y1="5" x2="110" y2="275" stroke="#18181b" strokeWidth="5" strokeOpacity="0.4" />
+                    <line x1="94" y1="5" x2="94" y2="275" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
+                    <line x1="126" y1="5" x2="126" y2="275" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
+                  </g>
+                )}
+              </g>
 
-              {/* Case Body */}
-              <circle cx="110" cy="140" r="54" fill={selectedCase.grad} />
-              
-              {/* Crown */}
-              <rect x="163" y="132" width="5" height="16" rx="1.5" fill={selectedCase.grad} />
+              {/* Case Body with lugs and bevels */}
+              <g filter="url(#c-shadow)">
+                {/* Lugs */}
+                <path d="M 76,70 L 86,45 L 94,45 L 86,70 Z" fill={selectedCase.grad} />
+                <path d="M 144,70 L 134,45 L 126,45 L 134,70 Z" fill={selectedCase.grad} />
+                <path d="M 76,210 L 86,235 L 94,235 L 86,210 Z" fill={selectedCase.grad} />
+                <path d="M 144,210 L 134,235 L 126,235 L 134,210 Z" fill={selectedCase.grad} />
+                
+                {/* Main Case Circle */}
+                <circle cx="110" cy="140" r="54" fill={selectedCase.grad} />
+                
+                {/* Fluted Crown */}
+                <rect x="163" y="132" width="5" height="16" rx="1.5" fill={selectedCase.grad} stroke="#000" strokeWidth="0.3" />
+                <line x1="165" y1="133" x2="165" y2="147" stroke="rgba(0,0,0,0.4)" strokeWidth="0.5" />
+                <line x1="167" y1="133" x2="167" y2="147" stroke="rgba(0,0,0,0.4)" strokeWidth="0.5" />
+              </g>
 
               {!showCaseBack ? (
                 /* FRONT VIEW */
@@ -220,41 +270,77 @@ export default function WatchCustomizer({ activeModel, onClose }) {
                   {/* Bezel Ring */}
                   <circle cx="110" cy="140" r="48" fill="#1b1b1e" stroke="rgba(0,0,0,0.4)" strokeWidth="1" />
                   {/* Bezel ticks */}
-                  <circle cx="110" cy="140" r="43" fill="none" stroke={selectedCase.color} strokeDasharray="1, 5" strokeWidth="1.5" />
+                  <circle cx="110" cy="140" r="44" fill="none" stroke={selectedCase.color} strokeDasharray="1, 4" strokeWidth="1.2" strokeOpacity="0.45" />
                   
                   {/* Dial face */}
-                  <circle cx="110" cy="140" r="39" fill="#0c0c0e" />
+                  <circle cx="110" cy="140" r="40" fill="url(#c-dial-grad)" />
 
-                  {/* Hour markers custom colored */}
-                  <circle cx="110" cy="107" r="1.5" fill={selectedAccent.color} />
-                  <circle cx="110" cy="173" r="1.5" fill={selectedAccent.color} />
-                  <circle cx="77" cy="140" r="1.5" fill={selectedAccent.color} />
-                  <circle cx="143" cy="140" r="1.5" fill={selectedAccent.color} />
+                  {/* Concentric Guilloche Lines on Dial */}
+                  <circle cx="110" cy="140" r="34" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+                  <circle cx="110" cy="140" r="26" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
 
-                  <g transform="rotate(30, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
-                  <g transform="rotate(60, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
-                  <g transform="rotate(120, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
-                  <g transform="rotate(150, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
-                  <g transform="rotate(210, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
-                  <g transform="rotate(240, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
-                  <g transform="rotate(300, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
-                  <g transform="rotate(330, 110, 140)"><circle cx="110" cy="107" r="1.2" fill={selectedAccent.color} opacity="0.6" /></g>
+                  {/* Hour markers (3D Beveled Custom Accent) */}
+                  <g>
+                    {/* 12 o'clock */}
+                    <path d="M 108,103 L 112,103 L 111,109 L 109,109 Z" fill="url(#c-accent-light)" />
+                    <path d="M 110,103 L 112,103 L 111,109 Q 110,107 110,109 Z" fill="url(#c-accent-dark)" />
+                    {/* 3 o'clock */}
+                    <path d="M 147,138 L 147,142 L 141,141 L 141,139 Z" fill="url(#c-accent-light)" />
+                    <path d="M 147,140 L 147,142 L 141,141 Q 143,140 141,140 Z" fill="url(#c-accent-dark)" />
+                    {/* 6 o'clock */}
+                    <path d="M 108,177 L 112,177 L 111,171 L 109,171 Z" fill="url(#c-accent-light)" />
+                    <path d="M 110,177 L 112,177 L 111,171 Q 110,173 110,171 Z" fill="url(#c-accent-dark)" />
+                    {/* 9 o'clock */}
+                    <path d="M 73,138 L 73,142 L 79,141 L 79,139 Z" fill="url(#c-accent-light)" />
+                    <path d="M 73,140 L 73,142 L 79,141 Q 77,140 79,140 Z" fill="url(#c-accent-dark)" />
 
-                  {/* Hands */}
-                  <line x1="110" y1="140" x2="94" y2="124" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
-                  <line x1="110" y1="140" x2="132" y2="140" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-                  <line x1="110" y1="140" x2="110" y2="108" stroke={selectedAccent.color} strokeWidth="0.8" />
+                    {/* Dot markers for other hours */}
+                    {[30, 60, 120, 150, 210, 240, 300, 330].map((angle) => (
+                      <g key={angle} transform={`rotate(${angle}, 110, 140)`}>
+                        <circle cx="110" cy="107" r="1.5" fill={selectedAccent.color} stroke="rgba(0,0,0,0.4)" strokeWidth="0.3" />
+                      </g>
+                    ))}
+                  </g>
+
+                  {/* Brand text */}
+                  <text x="110" y="125" fontSize="4.5" fill={selectedAccent.color} fontWeight="700" textAnchor="middle" letterSpacing="1.2">CHRONOS</text>
+
+                  {/* Hands (Faceted 3D Metal) */}
+                  <g>
+                    {/* Hour Hand: 10:10 angle */}
+                    <g transform="rotate(-30 110 140)">
+                      <polygon points="110,140 108.5,138 108.5,116 110,114" fill="url(#c-accent-light)" />
+                      <polygon points="110,140 111.5,138 111.5,116 110,114" fill="url(#c-accent-dark)" />
+                    </g>
+                    
+                    {/* Minute Hand */}
+                    <g transform="rotate(40 110 140)">
+                      <polygon points="110,140 108.5,138 108.5,104 110,102" fill="url(#c-accent-light)" />
+                      <polygon points="110,140 111.5,138 111.5,104 110,102" fill="url(#c-accent-dark)" />
+                    </g>
+
+                    {/* Sweep Second Hand in Accent color */}
+                    <g transform="rotate(185 110 140)">
+                      <line x1="110" y1="140" x2="110" y2="96" stroke={selectedAccent.color} strokeWidth="0.6" />
+                      <circle cx="110" cy="99" r="1.2" fill={selectedAccent.color} />
+                    </g>
+
+                    {/* Center Pin */}
+                    <circle cx="110" cy="140" r="2.8" fill="#1b1b1e" />
+                    <circle cx="110" cy="140" r="1.8" fill={selectedAccent.color} />
+                  </g>
                   
                   {/* Glass reflections */}
-                  <circle cx="110" cy="140" r="38.5" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-                  <path d="M 85,115 Q 110,105 135,115 Q 110,110 85,115 Z" fill="rgba(255, 255, 255, 0.15)" />
+                  <circle cx="110" cy="140" r="39.5" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" pointerEvents="none" />
+                  <path d="M 85,115 Q 110,105 135,115 Q 110,110 85,115 Z" fill="rgba(255, 255, 255, 0.12)" pointerEvents="none" />
+                  <path d="M 78,95 L 138,205 L 143,198 L 83,88 Z" fill="#ffffff" opacity="0.03" pointerEvents="none" />
                 </>
               ) : (
                 /* BACK VIEW (Shows engraving in real-time) */
                 <>
                   <circle cx="110" cy="140" r="48" fill={selectedCase.grad} stroke="#222" strokeWidth="1" />
                   <circle cx="110" cy="140" r="42" fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="2" />
-                  <circle cx="110" cy="140" r="32" fill="#18181b" />
+                  <circle cx="110" cy="140" r="32" fill="#151518" />
                   
                   {/* Engraving Path */}
                   <path id="custom-engrave-path" d="M 85,140 A 25,25 0 0,1 135,140" fill="none" />
@@ -266,7 +352,7 @@ export default function WatchCustomizer({ activeModel, onClose }) {
                       </textPath>
                     </text>
                   ) : (
-                    <text x="110" y="142" fontSize="5" fill="#52525b" textAnchor="middle">
+                    <text x="110" y="142" fontSize="5" fill="#4b5563" textAnchor="middle" letterSpacing="0.5">
                       YOUR ENGRAVING HERE
                     </text>
                   )}
