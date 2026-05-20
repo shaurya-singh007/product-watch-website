@@ -107,8 +107,8 @@ function MainApp() {
             </div>
             
             <h1 className="hero-title">
-              Temporal Precision <br />
-              <span className="font-serif" style={{ color: 'var(--primary)', fontStyle: 'italic', textTransform: 'lowercase' }}>redefined.</span>
+              Mechanical Poetry <br />
+              <span className="font-serif" style={{ color: 'var(--primary)', fontStyle: 'italic', textTransform: 'lowercase' }}>in perpetual motion.</span>
             </h1>
             
             <p className="hero-subtitle">
