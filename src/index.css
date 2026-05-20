@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  color-scheme: light dark;
+  font-family: 'Outfit', sans-serif;
+  
+  /* Core variables - Dark Mode (Default) */
+  --bg-main: #070709;
+  --bg-card: rgba(15, 15, 18, 0.7);
+  --bg-glass: rgba(10, 10, 12, 0.45);
+  --text-main: #f5f5f7;
+  --text-muted: #8e8e93;
+  --primary: #c5a880; /* Luxury Champagne Gold */
+  --accent: #e6cfb3;
+  --glass-border: 1px solid rgba(197, 168, 128, 0.15);
+  --glow-color: rgba(197, 168, 128, 0.25);
+  --shadow-3d: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-hover: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 168, 128, 0.35);
+  
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --font-display: 'Playfair Display', serif;
+}
+
+html.light {
+  /* Core variables - Light Mode */
+  --bg-main: #f6f5f3;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --bg-glass: rgba(245, 245, 247, 0.55);
+  --text-main: #1c1c1e;
+  --text-muted: #6e6e73;
+  --primary: #9e7f53; /* Darker Gold for visibility */
+  --accent: #c5a880;
+  --glass-border: 1px solid rgba(158, 127, 83, 0.25);
+  --glow-color: rgba(158, 127, 83, 0.15);
+  --shadow-3d: 0 15px 30px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.12), 0 0 20px rgba(158, 127, 83, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: none !important; /* Force use of custom cursor on desktop */
+}
+
+@media (hover: none) {
+  * {
+    cursor: auto !important;
+  }
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Base Typography utilities */
+h1, h2, h3, h4 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.font-serif {
+  font-family: var(--font-display);
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: var(--glass-border);
+  box-shadow: var(--shadow-3d);
+}
+
+/* Layout helpers */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
