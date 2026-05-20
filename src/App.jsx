@@ -348,12 +348,11 @@ function MainApp() {
                   <circle cx="110" cy="140" r="0.8" fill="#ffffff" opacity="0.7" />
                 </g>
 
-                {/* Sapphire Glass Reflection Overlay */}
-                <path d="M 76,104 C 95,96 125,96 144,104 C 148,124 148,156 144,176 C 125,184 95,184 76,176 C 72,156 72,124 76,104 Z" 
-                      fill="url(#hero-steel-grad)" opacity="0.06" pointerEvents="none" />
-                
-                {/* Modern Lens Flare Reflection Slash */}
-                <path d="M 74,90 L 140,200 L 146,190 L 80,80 Z" fill="#ffffff" opacity="0.04" pointerEvents="none" />
+                {/* Sapphire Glass Reflection Overlay (Upgraded dual-glare anti-reflective system) */}
+                <circle cx="110" cy="140" r="43.5" fill="rgba(66, 133, 244, 0.02)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" pointerEvents="none" />
+                <circle cx="110" cy="140" r="42.5" fill="none" stroke="rgba(66, 133, 244, 0.15)" strokeWidth="1" pointerEvents="none" />
+                <path d="M 82,112 C 95,95 125,95 138,112 C 127,107 93,107 82,112 Z" fill="rgba(255, 255, 255, 0.28)" pointerEvents="none" />
+                <path d="M 83,168 C 96,185 126,185 139,168 C 128,163 94,163 83,168 Z" fill="rgba(255, 255, 255, 0.1)" pointerEvents="none" />
               </svg>
             </motion.div>
           </div>

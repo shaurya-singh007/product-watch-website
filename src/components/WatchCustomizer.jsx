@@ -330,10 +330,11 @@ export default function WatchCustomizer({ activeModel, onClose }) {
                     <circle cx="110" cy="140" r="1.8" fill={selectedAccent.color} />
                   </g>
                   
-                  {/* Glass reflections */}
-                  <circle cx="110" cy="140" r="39.5" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" pointerEvents="none" />
-                  <path d="M 85,115 Q 110,105 135,115 Q 110,110 85,115 Z" fill="rgba(255, 255, 255, 0.12)" pointerEvents="none" />
-                  <path d="M 78,95 L 138,205 L 143,198 L 83,88 Z" fill="#ffffff" opacity="0.03" pointerEvents="none" />
+                  {/* Glass reflections (Realistic Sapphire Crystal AR coating & dual glares) */}
+                  <circle cx="110" cy="140" r="39.5" fill="rgba(66, 133, 244, 0.02)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" pointerEvents="none" />
+                  <circle cx="110" cy="140" r="38.5" fill="none" stroke="rgba(66, 133, 244, 0.15)" strokeWidth="1" pointerEvents="none" />
+                  <path d="M 82,112 C 95,95 125,95 138,112 C 127,107 93,107 82,112 Z" fill="rgba(255, 255, 255, 0.28)" pointerEvents="none" />
+                  <path d="M 83,168 C 96,185 126,185 139,168 C 128,163 94,163 83,168 Z" fill="rgba(255, 255, 255, 0.1)" pointerEvents="none" />
                 </>
               ) : (
                 /* BACK VIEW (Shows engraving in real-time) */

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ShoppingBag, Eye, Zap, Shield, RotateCcw } from 'lucide-react';
 import { Magnetic } from './UIUXProProvider';
+import { useTheme } from '../context/ThemeContext';
 
 const watchModels = [
   {
@@ -47,6 +48,7 @@ const watchModels = [
 ];
 
 export default function WatchCarousel({ onCustomize }) {
+  const { theme } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -369,10 +371,11 @@ export default function WatchCarousel({ onCustomize }) {
           <circle cx="110" cy="140" r="1.8" fill={accentColor} />
         </g>
         
-        {/* Glass reflection shine */}
-        <circle cx="110" cy="140" r="41.5" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" pointerEvents="none" />
-        <path d="M 85,115 Q 110,105 135,115 Q 110,110 85,115 Z" fill="rgba(255, 255, 255, 0.12)" pointerEvents="none" />
-        <path d="M 76,96 L 138,206 L 143,199 L 81,89 Z" fill="#ffffff" opacity="0.03" pointerEvents="none" />
+        {/* Glass reflection shine (Upgraded sapphire AR coat double glare) */}
+        <circle cx="110" cy="140" r="41.5" fill="rgba(66, 133, 244, 0.02)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" pointerEvents="none" />
+        <circle cx="110" cy="140" r="40.5" fill="none" stroke="rgba(66, 133, 244, 0.15)" strokeWidth="1" pointerEvents="none" />
+        <path d="M 82,112 C 95,95 125,95 138,112 C 127,107 93,107 82,112 Z" fill="rgba(255, 255, 255, 0.28)" pointerEvents="none" />
+        <path d="M 83,168 C 96,185 126,185 139,168 C 128,163 94,163 83,168 Z" fill="rgba(255, 255, 255, 0.1)" pointerEvents="none" />
       </svg>
     );
   };
@@ -394,7 +397,7 @@ export default function WatchCarousel({ onCustomize }) {
         {/* 3D Carousel Stage */}
         <div style={{
           position: 'relative',
-          height: '520px',
+          height: '470px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -475,32 +478,38 @@ export default function WatchCarousel({ onCustomize }) {
                   damping: 24,
                   mass: 0.8
                 }}
-                style={{
-                  position: 'absolute',
-                  width: '340px',
-                  height: '460px',
-                  zIndex,
-                  transformStyle: 'preserve-3d',
-                  cursor: isActive ? 'default' : 'pointer'
-                }}
                 className="glass-panel"
                 render-radius="24px"
                 style={{
                   position: 'absolute',
-                  width: '340px',
-                  height: '460px',
+                  width: '330px',
+                  height: '440px',
                   zIndex,
                   transformStyle: 'preserve-3d',
                   cursor: isActive ? 'default' : 'pointer',
                   borderRadius: '24px',
-                  padding: '30px 24px',
+                  padding: '22px 20px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  border: isActive ? '1px solid var(--primary)' : '1px solid rgba(255, 255, 255, 0.1)',
-                  background: isActive ? 'var(--bg-card)' : 'rgba(15, 15, 18, 0.35)',
-                  boxShadow: isActive ? '0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 20px rgba(197,168,128,0.2)' : '0 10px 25px rgba(0,0,0,0.5)',
+                  border: isActive 
+                    ? '1px solid var(--primary)' 
+                    : theme === 'dark' 
+                      ? '1px solid rgba(255, 255, 255, 0.1)' 
+                      : '1px solid rgba(0, 0, 0, 0.08)',
+                  background: isActive 
+                    ? 'var(--bg-card)' 
+                    : theme === 'dark' 
+                      ? 'rgba(15, 15, 18, 0.35)' 
+                      : 'rgba(255, 255, 255, 0.35)',
+                  boxShadow: isActive 
+                    ? theme === 'dark' 
+                      ? '0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 20px rgba(197,168,128,0.2)' 
+                      : '0 25px 50px -12px rgba(0, 0, 0, 0.12), 0 0 20px rgba(197,168,128,0.08)' 
+                    : theme === 'dark'
+                      ? '0 10px 25px rgba(0,0,0,0.5)'
+                      : '0 10px 25px rgba(0,0,0,0.05)',
                   backdropFilter: 'blur(20px)'
                 }}
               >
@@ -528,12 +537,12 @@ export default function WatchCarousel({ onCustomize }) {
                   </h3>
                 </div>
 
-                {/* Main Watch SVG Render */}
+                {/* Main Watch SVG Render (Scaled to fit nicely without overlap) */}
                 <motion.div
                   style={{
                     transformStyle: 'preserve-3d',
-                    transform: 'translateZ(30px)',
-                    margin: '10px 0'
+                    transform: 'translateZ(20px) scale(0.66)',
+                    margin: '-30px 0'
                   }}
                   animate={{
                     rotateZ: isActive ? 0 : [0, 5, -5, 0]
@@ -547,8 +556,16 @@ export default function WatchCarousel({ onCustomize }) {
                   {renderWatchSVG(model.svgType, isActive)}
                 </motion.div>
 
-                {/* Specs / CTA */}
-                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                {/* Specs / CTA (Translated forward on Z-axis to stay in front of watch straps) */}
+                <div style={{ 
+                  width: '100%', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  gap: '16px',
+                  transform: 'translateZ(45px)',
+                  transformStyle: 'preserve-3d'
+                }}>
                   {isActive && (
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}

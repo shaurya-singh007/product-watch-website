@@ -255,3 +255,23 @@
     gap: 40px;
   }
 }
+
+/* Light Mode Overrides for Layout Components */
+html.light .nav-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html.light .watch-exploded-section {
+  background: radial-gradient(circle at 30% 50%, rgba(158, 127, 83, 0.04) 0%, transparent 60%);
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+html.light .footer {
+  background: rgba(246, 245, 243, 0.85);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html.light .footer-bottom {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
