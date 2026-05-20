@@ -140,13 +140,16 @@ const CustomCursor = () => {
       const t = e.target;
       if (!t) return;
 
-      const isText = t.childNodes.length === 1 && t.childNodes[0].nodeType === 3;
-      const isImg = t.tagName === 'IMG' || t.tagName === 'SVG' || t.closest('svg') || t.closest('img') || t.classList.contains('watch-graphics-container');
+      const tag = t.tagName.toLowerCase();
       const isInteractive = t.tagName === 'BUTTON' || t.tagName === 'A' || t.closest('button') || t.closest('a') || t.classList.contains('clickable');
+      const isMedia = t.tagName === 'IMG' || t.tagName === 'SVG' || t.closest('svg') || t.closest('img') || t.classList.contains('watch-graphics-container') || t.closest('.watch-graphics-container');
       const isHeading = t.tagName.match(/^H[1-6]$/);
+      const isParagraph = tag === 'p' || tag === 'span' || tag === 'li' || tag === 'a' || t.childNodes.length === 1 && t.childNodes[0].nodeType === 3;
+      const isCard = t.classList.contains('glass-panel') || t.closest('.glass-panel') || t.classList.contains('card-3d') || t.closest('.card-3d');
+      const isSection = tag === 'section' || tag === 'header' || tag === 'footer' || t.closest('section') || t.closest('header') || t.closest('footer');
       
       if (isInteractive) {
-        // High-contrast clean white inversion circle for buttons/clickable items
+        // High-contrast white inversion circle for buttons/links
         gsap.to(dot, { scale: 0, opacity: 0, duration: 0.2 });
         gsap.to(ring, { 
           scale: 3.5, 
@@ -156,8 +159,8 @@ const CustomCursor = () => {
           duration: 0.3,
           ease: 'power3.out'
         });
-      } else if (isImg) {
-        // Vibrant neon cyan color shift when hovering over images/watch graphics
+      } else if (isMedia) {
+        // Vibrant neon cyan color shift when hovering over watch images and graphics
         gsap.to(dot, { scale: 1.4, opacity: 0.9, backgroundColor: '#00f2fe', duration: 0.2 });
         gsap.to(ring, { 
           scale: 2.2, 
@@ -167,14 +170,47 @@ const CustomCursor = () => {
           duration: 0.3,
           ease: 'power3.out'
         });
-      } else if (isHeading || isText) {
-        // Premium champagne gold color focus when reading headings or dense text
+      } else if (isHeading) {
+        // Premium champagne gold color focus for headings
         gsap.to(dot, { scale: 0.6, opacity: 1, backgroundColor: 'var(--primary)', duration: 0.25 });
         gsap.to(ring, { 
           scale: 1.8, 
           backgroundColor: 'transparent',
           borderColor: 'var(--primary)',
           borderWidth: '3px',
+          duration: 0.3,
+          ease: 'power3.out'
+        });
+      } else if (isParagraph) {
+        // Amber/Rose Gold color focus for normal text, paragraphs, spans, and lists
+        gsap.to(dot, { scale: 0.7, opacity: 1, backgroundColor: '#e5b8a8', duration: 0.25 });
+        gsap.to(ring, { 
+          scale: 1.4, 
+          backgroundColor: 'transparent',
+          borderColor: '#e5b8a8',
+          borderWidth: '1.5px',
+          duration: 0.3,
+          ease: 'power3.out'
+        });
+      } else if (isCard) {
+        // Steel-silver color focus when reading cards or specifications panels
+        gsap.to(dot, { scale: 1.1, opacity: 0.85, backgroundColor: '#cbd5e1', duration: 0.25 });
+        gsap.to(ring, { 
+          scale: 2.0, 
+          backgroundColor: 'rgba(203, 213, 225, 0.08)',
+          borderColor: '#cbd5e1',
+          borderWidth: '2px',
+          duration: 0.3,
+          ease: 'power3.out'
+        });
+      } else if (isSection) {
+        // Warm sunset amber glow for section bounds
+        gsap.to(dot, { scale: 1.2, opacity: 0.9, backgroundColor: '#f59e0b', duration: 0.25 });
+        gsap.to(ring, { 
+          scale: 2.5, 
+          backgroundColor: 'rgba(245, 158, 11, 0.05)',
+          borderColor: '#f59e0b',
+          borderWidth: '1.5px',
           duration: 0.3,
           ease: 'power3.out'
         });
