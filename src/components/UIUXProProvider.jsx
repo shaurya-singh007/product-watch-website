@@ -5,11 +5,11 @@ import { useTheme } from '../context/ThemeContext';
 import '../UIUXPro.css';
 import LiquidBackground from './LiquidBackground';
 
-// ── Interactive Particle Background ──
+// ── Interactive Particle Background (Realistic 3D Luxury Dust Motes) ──
 const InteractiveBackground = () => {
   const canvasRef = useRef(null);
   const { theme } = useTheme();
-  const mouse = useRef({ x: -1000, y: -1000 });
+  const mouse = useRef({ x: -1000, y: -1000, tx: -1000, ty: -1000 });
   const particles = useRef([]);
   const raf = useRef(null);
 
@@ -27,94 +27,87 @@ const InteractiveBackground = () => {
     window.addEventListener('resize', resize);
 
     const isDark = theme === 'dark';
-    const baseColors = isDark 
-      ? ['#3b82f6', '#8b5cf6', '#ef4444', '#06b6d4', '#10b981']
-      : ['#2563eb', '#7c3aed', '#dc2626', '#0891b2', '#059669'];
+    
+    // Luxury color palette: warm champagne gold & amber tones
+    const goldColors = isDark 
+      ? ['rgba(197, 168, 128, 0.25)', 'rgba(230, 210, 180, 0.18)', 'rgba(165, 130, 80, 0.15)']
+      : ['rgba(197, 168, 128, 0.18)', 'rgba(230, 210, 180, 0.12)', 'rgba(165, 130, 80, 0.1)'];
 
-    const COUNT = 100;
+    // Initialize particles with 3D positions (X, Y, Z depth)
+    const COUNT = 45; // Muted, clean count (not busy)
     const pts = [];
     for (let i = 0; i < COUNT; i++) {
       pts.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        r: Math.random() * 2 + 1,
-        color: baseColors[Math.floor(Math.random() * baseColors.length)],
+        z: Math.random() * 2.0 + 0.5, // Z depth: smaller z = closer (larger), larger z = far (smaller)
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        r: Math.random() * 2.5 + 1.2,
+        color: goldColors[Math.floor(Math.random() * goldColors.length)],
       });
     }
     particles.current = pts;
 
     const onMove = (e) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
+      mouse.current.tx = e.clientX;
+      mouse.current.ty = e.clientY;
     };
     window.addEventListener('mousemove', onMove);
 
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
+      
+      // Smooth mouse lag
+      mouse.current.x += (mouse.current.tx - mouse.current.x) * 0.05;
+      mouse.current.y += (mouse.current.ty - mouse.current.y) * 0.05;
       const mx = mouse.current.x;
       const my = mouse.current.y;
 
       for (let i = 0; i < pts.length; i++) {
         const p = pts[i];
+        
+        // Dynamic drift + mouse influence
         const dx = p.x - mx;
         const dy = p.y - my;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          const force = (150 - dist) / 150;
-          p.vx += (dx / dist) * force * 0.8;
-          p.vy += (dy / dist) * force * 0.8;
+        
+        // Gentle repulsion from cursor
+        if (dist < 220) {
+          const force = (220 - dist) / 220;
+          p.vx += (dx / dist) * force * 0.06 / p.z;
+          p.vy += (dy / dist) * force * 0.06 / p.z;
         }
 
+        // Apply velocities & friction
         p.x += p.vx;
         p.y += p.vy;
-        p.vx *= 0.98;
-        p.vy *= 0.98;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
 
-        if (p.x < 0) p.x = w;
-        if (p.x > w) p.x = 0;
-        if (p.y < 0) p.y = h;
-        if (p.y > h) p.y = 0;
+        // Wrap edges
+        if (p.x < -50) p.x = w + 50;
+        if (p.x > w + 50) p.x = -50;
+        if (p.y < -50) p.y = h + 50;
+        if (p.y > h + 50) p.y = -50;
 
+        // Render as soft glowing 3D dust spheres (Size based on Z-depth)
+        const size = p.r / p.z;
+        const opacityMultiplier = Math.max(0, 1 - (p.z / 2.5)); // Fades as it gets further away
+        
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = isDark ? 0.4 : 0.25;
-        ctx.fill();
-
-        for (let j = i + 1; j < pts.length; j++) {
-          const p2 = pts[j];
-          const d = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (d < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = p.color;
-            ctx.globalAlpha = (1 - d / 120) * (isDark ? 0.15 : 0.1);
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      ctx.globalAlpha = 1;
-
-      const t = Date.now() * 0.001;
-      const drawOrb = (cx, cy, radius, color) => {
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        grad.addColorStop(0, color);
+        
+        // Radial gradient for glow look
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 2.5);
+        grad.addColorStop(0, p.color);
         grad.addColorStop(1, 'transparent');
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        
+        ctx.arc(p.x, p.y, size * 2.5, 0, Math.PI * 2);
         ctx.fillStyle = grad;
-        ctx.globalAlpha = isDark ? 0.08 : 0.04;
+        ctx.globalAlpha = opacityMultiplier;
         ctx.fill();
-        ctx.globalAlpha = 1;
-      };
-      const orbColors = isDark ? ['#3b82f6', '#8b5cf6', '#ef4444'] : ['#2563eb', '#7c3aed', '#dc2626'];
-      drawOrb(w * 0.2 + Math.sin(t * 0.3) * 100, h * 0.3 + Math.cos(t * 0.4) * 80, 250, orbColors[0]);
-      drawOrb(w * 0.8 + Math.cos(t * 0.5) * 120, h * 0.7 + Math.sin(t * 0.3) * 100, 300, orbColors[1]);
-      drawOrb(w * 0.5 + Math.sin(t * 0.2) * 80, h * 0.5 + Math.cos(t * 0.6) * 60, 200, orbColors[2]);
+      }
+      ctx.globalAlpha = 1.0;
 
       raf.current = requestAnimationFrame(draw);
     };
@@ -127,7 +120,7 @@ const InteractiveBackground = () => {
     };
   }, [theme]);
 
-  return <canvas ref={canvasRef} className="pro-bg-canvas" />;
+  return <canvas ref={canvasRef} className="pro-bg-canvas" style={{ zIndex: -1 }} />;
 };
 
 const CustomCursor = () => {
