@@ -55,9 +55,9 @@ export default function LiquidBackground() {
         vec2 uv = gl_FragCoord.xy / u_resolution.xy;
         vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / u_resolution.y;
         
-        // 1. Base Studio Ambient (charcoal slate vs light luxury ivory-eggshell)
+        // 1. Base Studio Ambient (charcoal slate vs light luxury alabaster-linen)
         vec3 darkBG = vec3(0.045, 0.045, 0.05);
-        vec3 lightBG = vec3(0.965, 0.96, 0.95);
+        vec3 lightBG = vec3(0.917, 0.898, 0.862);
         vec3 baseBackground = mix(darkBG, lightBG, u_is_light);
         
         // 2. Soft Fixed Key Light (Top Center)

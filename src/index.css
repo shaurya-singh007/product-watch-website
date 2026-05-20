@@ -24,18 +24,18 @@
 }
 
 html.light {
-  /* Core variables - Light Mode */
-  --bg-main: #f6f5f3;
-  --bg-card: rgba(255, 255, 255, 0.75);
-  --bg-glass: rgba(245, 245, 247, 0.55);
+  /* Core variables - Light Mode (Premium Alabaster & Warm Gold Contrast) */
+  --bg-main: #eae5dc; 
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-glass: rgba(255, 255, 255, 0.58);
   --text-main: #1c1c1e;
-  --text-muted: #6e6e73;
-  --primary: #9e7f53; /* Darker Gold for visibility */
-  --accent: #c5a880;
-  --glass-border: 1px solid rgba(158, 127, 83, 0.25);
-  --glow-color: rgba(158, 127, 83, 0.15);
-  --shadow-3d: 0 15px 30px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.12), 0 0 20px rgba(158, 127, 83, 0.25);
+  --text-muted: #5e5e63;
+  --primary: #8a6d3b; /* Deep luxury golden bronze */
+  --accent: #b0956b;
+  --glass-border: 1px solid rgba(138, 109, 59, 0.18);
+  --glow-color: rgba(138, 109, 59, 0.12);
+  --shadow-3d: 0 15px 30px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.1), 0 0 22px rgba(138, 109, 59, 0.2);
 }
 
 * {
