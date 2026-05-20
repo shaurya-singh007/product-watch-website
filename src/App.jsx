@@ -172,42 +172,188 @@ function MainApp() {
               }}
             >
               {/* Grand Showcase SVG Watch */}
-              <svg width="260" height="340" viewBox="0 0 220 280" style={{ filter: 'drop-shadow(0 25px 40px rgba(0,0,0,0.6))' }}>
-                {/* Strap */}
-                <rect x="85" y="10" width="50" height="70" rx="3" fill="#18181b" />
-                <rect x="85" y="200" width="50" height="70" rx="3" fill="#18181b" />
-                <line x1="88" y1="10" x2="88" y2="80" stroke="rgba(255,255,255,0.06)" strokeDasharray="3,2" />
-                <line x1="132" y1="10" x2="132" y2="80" stroke="rgba(255,255,255,0.06)" strokeDasharray="3,2" />
-                <line x1="88" y1="200" x2="88" y2="270" stroke="rgba(255,255,255,0.06)" strokeDasharray="3,2" />
-                <line x1="132" y1="200" x2="132" y2="270" stroke="rgba(255,255,255,0.06)" strokeDasharray="3,2" />
+              <svg width="280" height="360" viewBox="0 0 220 280">
+                <defs>
+                  {/* Steel textures */}
+                  <linearGradient id="hero-steel-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="25%" stopColor="#b8c2cc" />
+                    <stop offset="45%" stopColor="#8d99ae" />
+                    <stop offset="55%" stopColor="#f8f9fa" />
+                    <stop offset="75%" stopColor="#4a5568" />
+                    <stop offset="100%" stopColor="#b8c2cc" />
+                  </linearGradient>
+                  
+                  <linearGradient id="hero-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#faf0d7" />
+                    <stop offset="30%" stopColor="#d4af37" />
+                    <stop offset="50%" stopColor="#aa7c11" />
+                    <stop offset="70%" stopColor="#f3e5ab" />
+                    <stop offset="85%" stopColor="#aa7c11" />
+                    <stop offset="100%" stopColor="#d4af37" />
+                  </linearGradient>
 
-                {/* Case */}
-                <rect x="75" y="70" width="70" height="140" rx="35" fill="url(#steel-grad)" />
-                <circle cx="110" cy="140" r="56" fill="url(#steel-grad)" />
-                <circle cx="110" cy="140" r="48" fill="#1b1b1e" stroke="rgba(0,0,0,0.3)" strokeWidth="1" />
-                <circle cx="110" cy="140" r="42" fill="#09090b" />
-                <circle cx="110" cy="140" r="36" fill="none" stroke="rgba(197, 168, 128, 0.15)" strokeWidth="0.5" />
+                  <linearGradient id="hero-gold-light" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#f3e5ab" />
+                    <stop offset="100%" stopColor="#d4af37" />
+                  </linearGradient>
+                  
+                  <linearGradient id="hero-gold-dark" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#aa7c11" />
+                    <stop offset="100%" stopColor="#805d08" />
+                  </linearGradient>
 
-                {/* Dial Hour markers */}
-                <circle cx="110" cy="103" r="1.5" fill="url(#gold-grad)" />
-                <circle cx="110" cy="177" r="1.5" fill="url(#gold-grad)" />
-                <circle cx="73" cy="140" r="1.5" fill="url(#gold-grad)" />
-                <circle cx="147" cy="140" r="1.5" fill="url(#gold-grad)" />
+                  <radialGradient id="hero-dial-grad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#1c1d22" />
+                    <stop offset="70%" stopColor="#0b0c10" />
+                    <stop offset="100%" stopColor="#020204" />
+                  </radialGradient>
+                  
+                  <linearGradient id="hero-strap-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#0f0f12" />
+                    <stop offset="20%" stopColor="#1b1c21" />
+                    <stop offset="50%" stopColor="#25272e" />
+                    <stop offset="80%" stopColor="#1b1c21" />
+                    <stop offset="100%" stopColor="#0f0f12" />
+                  </linearGradient>
 
-                {/* Brand Logo */}
-                <text x="110" y="122" fontSize="5.5" fill="url(#gold-grad)" textAnchor="middle" letterSpacing="1.2">CHRONOS</text>
+                  <filter id="hero-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="12" stdDeviation="15" floodColor="#000000" floodOpacity="0.7" />
+                  </filter>
+                </defs>
 
-                {/* Hands */}
-                <line x1="110" y1="140" x2="94" y2="124" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
-                <line x1="110" y1="140" x2="135" y2="140" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-                <line x1="110" y1="140" x2="110" y2="105" stroke="var(--primary)" strokeWidth="0.8" />
+                {/* Strap with Realistic Textured Ribbing & Golden Stitches */}
+                <g filter="url(#hero-shadow)">
+                  {/* Top Strap */}
+                  <path d="M 85,10 L 135,10 L 130,80 L 90,80 Z" fill="url(#hero-strap-grad)" />
+                  {/* Bottom Strap */}
+                  <path d="M 90,200 L 130,200 L 135,270 L 85,270 Z" fill="url(#hero-strap-grad)" />
+                  
+                  {/* Stitching lines */}
+                  <path d="M 88,10 L 93,80" stroke="#d4af37" strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                  <path d="M 132,10 L 127,80" stroke="#d4af37" strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                  <path d="M 93,200 L 88,270" stroke="#d4af37" strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                  <path d="M 127,200 L 132,270" stroke="#d4af37" strokeWidth="0.8" strokeDasharray="3,2" strokeOpacity="0.4" />
+                  
+                  {/* Strap End Steel Caps */}
+                  <path d="M 85,10 L 135,10 L 135,14 L 85,14 Z" fill="url(#hero-steel-grad)" />
+                  <path d="M 85,266 L 135,266 L 135,270 L 85,270 Z" fill="url(#hero-steel-grad)" />
+                </g>
+
+                {/* Stainless Steel Lugs & Outer Case with Chamfers */}
+                <g filter="url(#hero-shadow)">
+                  {/* Lugs */}
+                  <path d="M 76,70 L 86,45 L 94,45 L 86,70 Z" fill="url(#hero-steel-grad)" stroke="#1a202c" strokeWidth="0.3" />
+                  <path d="M 144,70 L 134,45 L 126,45 L 134,70 Z" fill="url(#hero-steel-grad)" stroke="#1a202c" strokeWidth="0.3" />
+                  <path d="M 76,210 L 86,235 L 94,235 L 86,210 Z" fill="url(#hero-steel-grad)" stroke="#1a202c" strokeWidth="0.3" />
+                  <path d="M 144,210 L 134,235 L 126,235 L 134,210 Z" fill="url(#hero-steel-grad)" stroke="#1a202c" strokeWidth="0.3" />
+
+                  {/* Main Rounded Case */}
+                  <rect x="74" y="68" width="72" height="144" rx="36" fill="url(#hero-steel-grad)" />
+                  <circle cx="110" cy="140" r="58" fill="url(#hero-steel-grad)" stroke="#1e293b" strokeWidth="0.5" />
+                  
+                  {/* Crown Guard & Fluted Crown */}
+                  <rect x="166" y="132" width="6" height="16" rx="1.5" fill="url(#hero-steel-grad)" stroke="#000" strokeWidth="0.4" />
+                  <line x1="168" y1="133" x2="168" y2="147" stroke="#334155" strokeWidth="0.6" />
+                  <line x1="170" y1="133" x2="170" y2="147" stroke="#334155" strokeWidth="0.6" />
+
+                  {/* Polished Gold Bezel Inner Ring */}
+                  <circle cx="110" cy="140" r="50" fill="url(#hero-gold-grad)" />
+                  <circle cx="110" cy="140" r="48" fill="#0d0d0f" />
+                </g>
+
+                {/* Sunburst Dial Surface */}
+                <circle cx="110" cy="140" r="44" fill="url(#hero-dial-grad)" />
+
+                {/* Concentric Guilloche Lines on Dial */}
+                <circle cx="110" cy="140" r="38" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+                <circle cx="110" cy="140" r="30" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+
+                {/* Sub-dials (Chronographs) */}
+                <g opacity="0.65">
+                  {/* Left Chrono */}
+                  <circle cx="94" cy="140" r="10" fill="rgba(0,0,0,0.4)" stroke="rgba(197, 168, 128, 0.2)" strokeWidth="0.5" />
+                  <line x1="94" y1="140" x2="90" y2="136" stroke="#d4af37" strokeWidth="0.6" />
+                  
+                  {/* Bottom Chrono */}
+                  <circle cx="110" cy="155" r="10" fill="rgba(0,0,0,0.4)" stroke="rgba(197, 168, 128, 0.2)" strokeWidth="0.5" />
+                  <line x1="110" y1="155" x2="110" y2="148" stroke="#d4af37" strokeWidth="0.6" />
+                </g>
+
+                {/* Beveled 3D Hour Indexes */}
+                <g>
+                  {/* 12 o'clock (Dual Index) */}
+                  <path d="M 108,100 L 112,100 L 111,107 L 109,107 Z" fill="url(#hero-gold-light)" />
+                  <path d="M 110,100 L 112,100 L 111,107 Q 110,105 110,107 Z" fill="url(#hero-gold-dark)" />
+                  
+                  {/* 3 o'clock */}
+                  <path d="M 148,138 L 148,142 L 141,141 L 141,139 Z" fill="url(#hero-gold-light)" />
+                  <path d="M 148,140 L 148,142 L 141,141 Q 143,140 141,140 Z" fill="url(#hero-gold-dark)" />
+
+                  {/* 6 o'clock */}
+                  <path d="M 108,180 L 112,180 L 111,173 L 109,173 Z" fill="url(#hero-gold-light)" />
+                  <path d="M 110,180 L 112,180 L 111,173 Q 110,175 110,173 Z" fill="url(#hero-gold-dark)" />
+
+                  {/* 9 o'clock */}
+                  <path d="M 72,138 L 72,142 L 79,141 L 79,139 Z" fill="url(#hero-gold-light)" />
+                  <path d="M 72,140 L 72,142 L 79,141 Q 77,140 79,140 Z" fill="url(#hero-gold-dark)" />
+
+                  {/* Other hour marks */}
+                  <circle cx="127" cy="110" r="1.8" fill="url(#hero-gold-grad)" />
+                  <circle cx="139" cy="122" r="1.8" fill="url(#hero-gold-grad)" />
+                  <circle cx="139" cy="158" r="1.8" fill="url(#hero-gold-grad)" />
+                  <circle cx="127" cy="170" r="1.8" fill="url(#hero-gold-grad)" />
+                  <circle cx="93" cy="170" r="1.8" fill="url(#hero-gold-grad)" />
+                  <circle cx="81" cy="158" r="1.8" fill="url(#hero-gold-grad)" />
+                  <circle cx="81" cy="122" r="1.8" fill="url(#hero-gold-grad)" />
+                  <circle cx="93" cy="110" r="1.8" fill="url(#hero-gold-grad)" />
+                </g>
+
+                {/* Sub-second ticks */}
+                <circle cx="110" cy="140" r="43" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="0.5" strokeDasharray="1,2" />
+
+                {/* Brand Text */}
+                <text x="110" y="125" fontSize="5.5" fill="url(#hero-gold-grad)" fontWeight="700" textAnchor="middle" letterSpacing="1.8">CHRONOS</text>
+                <text x="110" y="130" fontSize="3" fill="#cbd5e1" opacity="0.6" textAnchor="middle" letterSpacing="1">GENÈVE</text>
+
+                {/* Faceted Metallic Hands (Dual-Polygon 3D look) */}
+                <g>
+                  {/* Hour Hand: angled at 10:10 (creased geometry) */}
+                  <g transform="rotate(-30 110 140)">
+                    {/* Left half - light gold */}
+                    <polygon points="110,140 108.5,138 108.5,115 110,113" fill="url(#hero-gold-light)" />
+                    {/* Right half - dark gold */}
+                    <polygon points="110,140 111.5,138 111.5,115 110,113" fill="url(#hero-gold-dark)" />
+                  </g>
+                  
+                  {/* Minute Hand: angled (creased geometry) */}
+                  <g transform="rotate(40 110 140)">
+                    {/* Left half - light gold */}
+                    <polygon points="110,140 108.5,138 108.5,102 110,100" fill="url(#hero-gold-light)" />
+                    {/* Right half - dark gold */}
+                    <polygon points="110,140 111.5,138 111.5,102 110,100" fill="url(#hero-gold-dark)" />
+                  </g>
+
+                  {/* Sweep Second Hand in Polished Steel/Gold */}
+                  <g transform="rotate(185 110 140)">
+                    <line x1="110" y1="140" x2="110" y2="94" stroke="#d4af37" strokeWidth="0.6" />
+                    <circle cx="110" cy="98" r="1.5" fill="#d4af37" />
+                    {/* Counterweight */}
+                    <line x1="110" y1="140" x2="110" y2="152" stroke="#d4af37" strokeWidth="1" />
+                  </g>
+
+                  {/* Polished Center Pin Cap */}
+                  <circle cx="110" cy="140" r="3.2" fill="#1e293b" />
+                  <circle cx="110" cy="140" r="2.2" fill="url(#hero-gold-grad)" />
+                  <circle cx="110" cy="140" r="0.8" fill="#ffffff" opacity="0.7" />
+                </g>
+
+                {/* Sapphire Glass Reflection Overlay */}
+                <path d="M 76,104 C 95,96 125,96 144,104 C 148,124 148,156 144,176 C 125,184 95,184 76,176 C 72,156 72,124 76,104 Z" 
+                      fill="url(#hero-steel-grad)" opacity="0.06" pointerEvents="none" />
                 
-                {/* Cap */}
-                <circle cx="110" cy="140" r="3" fill="#fff" />
-                <circle cx="110" cy="140" r="1" fill="#000" />
-                
-                {/* Crystal reflections */}
-                <path d="M 85,115 Q 110,105 135,115 Q 110,110 85,115 Z" fill="rgba(255, 255, 255, 0.12)" />
+                {/* Modern Lens Flare Reflection Slash */}
+                <path d="M 74,90 L 140,200 L 146,190 L 80,80 Z" fill="#ffffff" opacity="0.04" pointerEvents="none" />
               </svg>
             </motion.div>
           </div>
