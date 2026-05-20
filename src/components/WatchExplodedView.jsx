@@ -134,44 +134,77 @@ export default function WatchExplodedView() {
           {/* SVG Definitions shared by layers */}
           <svg style={{ position: 'absolute', width: 0, height: 0 }}>
             <defs>
-              {/* Metallic Steel Gradient */}
+              {/* Polished Steel Gradient with high contrast metallic light sweeps */}
               <linearGradient id="steel-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="25%" stopColor="#a3a3a8" />
-                <stop offset="50%" stopColor="#3f3f42" />
-                <stop offset="75%" stopColor="#a3a3a8" />
-                <stop offset="100%" stopColor="#212124" />
+                <stop offset="15%" stopColor="#d1d1d6" />
+                <stop offset="30%" stopColor="#8e8e93" />
+                <stop offset="45%" stopColor="#e5e5ea" />
+                <stop offset="60%" stopColor="#ffffff" />
+                <stop offset="75%" stopColor="#48484a" />
+                <stop offset="90%" stopColor="#8e8e93" />
+                <stop offset="100%" stopColor="#1c1c1e" />
+              </linearGradient>
+
+              <linearGradient id="steel-lug-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="50%" stopColor="#8e8e93" />
+                <stop offset="100%" stopColor="#3a3a3c" />
               </linearGradient>
               
-              {/* Metallic Gold Gradient */}
+              {/* Polished Gold Gradient with rich gold tones */}
               <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#fdf8e2" />
-                <stop offset="30%" stopColor="#d4af37" />
-                <stop offset="70%" stopColor="#8a6d21" />
-                <stop offset="100%" stopColor="#d4af37" />
+                <stop offset="0%" stopColor="#fff6d6" />
+                <stop offset="25%" stopColor="#e5c158" />
+                <stop offset="50%" stopColor="#b58d20" />
+                <stop offset="75%" stopColor="#e5c158" />
+                <stop offset="100%" stopColor="#684e0c" />
               </linearGradient>
 
-              {/* Metallic Brass Gradient */}
+              {/* Rich Brass Gradient for movement gears */}
               <linearGradient id="brass-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ffeeaa" />
-                <stop offset="40%" stopColor="#cc9933" />
-                <stop offset="80%" stopColor="#775511" />
-                <stop offset="100%" stopColor="#cc9933" />
+                <stop offset="0%" stopColor="#ffe994" />
+                <stop offset="40%" stopColor="#d4a331" />
+                <stop offset="80%" stopColor="#7a550d" />
+                <stop offset="100%" stopColor="#d4a331" />
               </linearGradient>
 
-              {/* Radial Steel Finish */}
+              {/* Radial Steel Finish for watch dial/plates */}
               <radialGradient id="radial-steel" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#dedede" />
-                <stop offset="60%" stopColor="#7e7e85" />
-                <stop offset="100%" stopColor="#252527" />
+                <stop offset="0%" stopColor="#f2f2f7" />
+                <stop offset="50%" stopColor="#c7c7cc" />
+                <stop offset="80%" stopColor="#636366" />
+                <stop offset="100%" stopColor="#2c2c2e" />
               </radialGradient>
 
-              {/* Strap Pattern */}
-              <pattern id="leather-pattern" width="10" height="10" patternUnits="userSpaceOnUse">
-                <rect width="10" height="10" fill="#18181b" />
-                <path d="M 0,0 C 3,3 7,3 10,0" stroke="#101012" strokeWidth="0.8" fill="none" />
-                <circle cx="5" cy="5" r="0.7" fill="#0c0c0e" />
-              </pattern>
+              {/* Sunburst Black/Slate Dial Gradient */}
+              <radialGradient id="dial-sunburst" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#2c2c2e" />
+                <stop offset="70%" stopColor="#1c1c1e" />
+                <stop offset="100%" stopColor="#0c0c0d" />
+              </radialGradient>
+
+              {/* Leather strap realistic gradient (Padded volume) */}
+              <linearGradient id="leather-strap" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#0d0d0f" />
+                <stop offset="15%" stopColor="#1c1c22" />
+                <stop offset="50%" stopColor="#2d2d35" />
+                <stop offset="85%" stopColor="#1c1c22" />
+                <stop offset="100%" stopColor="#0d0d0f" />
+              </linearGradient>
+
+              {/* Ruby glass radial gradient */}
+              <radialGradient id="ruby-grad" cx="35%" cy="35%" r="65%">
+                <stop offset="0%" stopColor="#ff4d6d" />
+                <stop offset="40%" stopColor="#ff0055" />
+                <stop offset="85%" stopColor="#800020" />
+                <stop offset="100%" stopColor="#4a0010" />
+              </radialGradient>
+
+              {/* Shadow filter for 3D depth */}
+              <filter id="real-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="16" stdDeviation="12" floodColor="#000000" floodOpacity="0.65" />
+              </filter>
             </defs>
           </svg>
 
@@ -186,30 +219,35 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-strap" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="8" stdDeviation="6" floodColor="#000000" floodOpacity="0.45" />
-              </filter>
-              <g filter="url(#shadow-strap)">
-                {/* Upper Strap */}
-                <path d="M 205,100 L 245,100 L 245,30 L 205,30 Z" fill="url(#leather-pattern)" />
-                {/* Upper Strap stitching */}
-                <line x1="208" y1="100" x2="208" y2="30" stroke="#3f3f46" strokeDasharray="3,2" strokeWidth="1" />
-                <line x1="242" y1="100" x2="242" y2="30" stroke="#3f3f46" strokeDasharray="3,2" strokeWidth="1" />
+              <g filter="url(#real-shadow)">
+                {/* Upper Strap (Realistic padding shape) */}
+                <path d="M 205,100 L 245,100 L 243,30 Q 225,28 207,30 Z" fill="url(#leather-strap)" />
+                {/* Edge sealing lines */}
+                <path d="M 206,100 L 208,30" stroke="#000" strokeWidth="1" opacity="0.8" />
+                <path d="M 244,100 L 242,30" stroke="#000" strokeWidth="1" opacity="0.8" />
+                {/* Real stitching (warm gold thread) */}
+                <path d="M 208.5,100 L 210.5,33" stroke="#a38258" strokeDasharray="3,2.5" strokeWidth="1" opacity="0.85" />
+                <path d="M 241.5,100 L 239.5,33" stroke="#a38258" strokeDasharray="3,2.5" strokeWidth="1" opacity="0.85" />
                 
-                {/* Golden Buckle */}
-                <rect x="200" y="24" width="50" height="8" rx="3" fill="url(#gold-grad)" stroke="#8a6d21" strokeWidth="0.5" />
-                <rect x="222" y="16" width="6" height="16" fill="url(#gold-grad)" />
+                {/* 3D Buckle */}
+                <rect x="200" y="24" width="50" height="8" rx="2" fill="url(#steel-grad)" stroke="#222" strokeWidth="0.5" />
+                <rect x="221" y="16" width="8" height="16" rx="1" fill="url(#steel-grad)" stroke="#222" strokeWidth="0.5" />
 
                 {/* Lower Strap */}
-                <path d="M 205,350 L 245,350 L 243,430 L 207,430 Z" fill="url(#leather-pattern)" />
-                {/* Lower Strap stitching */}
-                <line x1="208" y1="350" x2="210" y2="430" stroke="#3f3f46" strokeDasharray="3,2" strokeWidth="1" />
-                <line x1="242" y1="350" x2="240" y2="430" stroke="#3f3f46" strokeDasharray="3,2" strokeWidth="1" />
-                {/* Strap adjustment holes */}
-                <circle cx="225" cy="370" r="1.5" fill="#000" />
-                <circle cx="225" cy="385" r="1.5" fill="#000" />
-                <circle cx="225" cy="400" r="1.5" fill="#000" />
-                <circle cx="225" cy="415" r="1.5" fill="#000" />
+                <path d="M 205,350 L 245,350 L 241,432 Q 225,435 209,432 Z" fill="url(#leather-strap)" />
+                {/* Stitching */}
+                <path d="M 208.5,350 L 212.5,429" stroke="#a38258" strokeDasharray="3,2.5" strokeWidth="1" opacity="0.85" />
+                <path d="M 241.5,350 L 237.5,429" stroke="#a38258" strokeDasharray="3,2.5" strokeWidth="1" opacity="0.85" />
+                {/* Edge seals */}
+                <path d="M 206,350 L 210,432" stroke="#000" strokeWidth="1" opacity="0.8" />
+                <path d="M 244,350 L 240,432" stroke="#000" strokeWidth="1" opacity="0.8" />
+                {/* Strap holes with metal grommets */}
+                {[370, 385, 400, 415].map(y => (
+                  <g key={y}>
+                    <circle cx="225" cy={y} r="2.5" fill="#18181b" />
+                    <circle cx="225" cy={y} r="2" fill="#000" />
+                  </g>
+                ))}
               </g>
             </svg>
           </motion.div>
@@ -225,21 +263,37 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-case" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="12" stdDeviation="8" floodColor="#000" floodOpacity="0.4" />
-              </filter>
-              <g filter="url(#shadow-case)">
-                {/* Case Lugs Top */}
-                <path d="M 195,160 L 210,100 L 240,100 L 255,160 Z" fill="url(#steel-grad)" />
+              <g filter="url(#real-shadow)">
+                {/* Case Lugs Top with chamfered polished bevels */}
+                <path d="M 194,160 L 210,100 L 240,100 L 256,160 Z" fill="url(#steel-lug-grad)" />
+                <path d="M 194,160 L 200,160 L 212,102 L 210,100 Z" fill="#ffffff" opacity="0.4" /> {/* Polished edge highlight */}
+                <path d="M 256,160 L 250,160 L 238,102 L 240,100 Z" fill="#2c2c2e" opacity="0.6" /> {/* Shadow side */}
+
                 {/* Case Lugs Bottom */}
-                <path d="M 195,290 L 210,350 L 240,350 L 255,290 Z" fill="url(#steel-grad)" />
-                {/* Main Circular Case Body */}
-                <circle cx="225" cy="225" r="75" fill="url(#steel-grad)" stroke="#18181b" strokeWidth="1" />
-                {/* Inner cutout where dial sits */}
-                <circle cx="225" cy="225" r="62" fill="#101012" stroke="#2a2a2d" strokeWidth="1.5" />
-                {/* Right Side Crown Guard & Crown */}
-                <rect x="300" y="215" width="12" height="20" rx="2" fill="url(#gold-grad)" stroke="#8a6d21" strokeWidth="0.5" />
-                <path d="M 296,218 L 300,216 L 300,234 L 296,232 Z" fill="url(#steel-grad)" />
+                <path d="M 194,290 L 210,350 L 240,350 L 256,290 Z" fill="url(#steel-lug-grad)" />
+                <path d="M 194,290 L 200,290 L 212,348 L 210,350 Z" fill="#ffffff" opacity="0.4" />
+                <path d="M 256,290 L 250,290 L 238,348 L 240,350 Z" fill="#2c2c2e" opacity="0.6" />
+
+                {/* Main 3D Circular Case Body with polished rim highlight */}
+                <circle cx="225" cy="225" r="76" fill="url(#steel-grad)" stroke="#1c1c1e" strokeWidth="1" />
+                <circle cx="225" cy="225" r="74" fill="none" stroke="#ffffff" strokeWidth="0.8" opacity="0.5" />
+                
+                {/* Inner cutout where dial sits (deep hollow shadow) */}
+                <circle cx="225" cy="225" r="62.5" fill="#000" stroke="#48484a" strokeWidth="2" />
+                
+                {/* Luxury 3D Knurled Crown on the right */}
+                <g>
+                  {/* Crown guard */}
+                  <path d="M 295,212 L 302,216 L 302,234 L 295,238 Z" fill="url(#steel-grad)" />
+                  {/* Fluted crown cylinder */}
+                  <rect x="302" y="215" width="10" height="20" rx="1.5" fill="url(#gold-grad)" stroke="#3a2f0f" strokeWidth="0.5" />
+                  {/* Crown ridges (teeth) */}
+                  {[217, 219, 221, 223, 225, 227, 229, 231, 233].map(cy => (
+                    <line key={cy} x1="302.5" y1={cy} x2="311.5" y2={cy} stroke="#3a2f0f" strokeWidth="1.2" />
+                  ))}
+                  {/* Crown Logo stamp */}
+                  <circle cx="310" cy="225" r="2.5" fill="#ffd54f" opacity="0.7" />
+                </g>
               </g>
             </svg>
           </motion.div>
@@ -255,24 +309,32 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-bezel" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="10" stdDeviation="6" floodColor="#000" floodOpacity="0.35" />
-              </filter>
-              <g filter="url(#shadow-bezel)">
-                {/* Knurled Outer Ring */}
-                <circle cx="225" cy="225" r="66" fill="url(#steel-grad)" stroke="#1a1a1c" strokeWidth="1" />
-                {/* Bezel Insert (Ceramic Dark Ring) */}
-                <circle cx="225" cy="225" r="62" fill="#141416" stroke="#222" strokeWidth="0.5" />
-                <circle cx="225" cy="225" r="50" fill="#000" fillOpacity="0" stroke="url(#gold-grad)" strokeWidth="1.5" />
-                {/* Bezel Markings (Gold Ticks & Numbers) */}
-                <circle cx="225" cy="225" r="56" fill="none" stroke="url(#gold-grad)" strokeWidth="3" strokeDasharray="1, 8.35" />
-                {/* Bezel 12hr Triangle */}
-                <polygon points="225,166 221,173 229,173" fill="#ff4d4d" />
-                {/* 10, 20, 30, 40, 50 numeric indicators */}
-                <text x="225" y="180" fontSize="7" fontWeight="bold" fill="#fff" textAnchor="middle">60</text>
-                <text x="278" y="227" fontSize="7" fontWeight="bold" fill="#fff" textAnchor="middle">15</text>
-                <text x="225" y="278" fontSize="7" fontWeight="bold" fill="#fff" textAnchor="middle">30</text>
-                <text x="172" y="227" fontSize="7" fontWeight="bold" fill="#fff" textAnchor="middle">45</text>
+              <g filter="url(#real-shadow)">
+                {/* Outer Bezel Steel Ring with knurling details */}
+                <circle cx="225" cy="225" r="67" fill="url(#steel-grad)" stroke="#1a1a1c" strokeWidth="1" />
+                {/* High frequency knurled teeth simulation on outer rim */}
+                <circle cx="225" cy="225" r="66" fill="none" stroke="#222" strokeWidth="1.5" strokeDasharray="1.5, 1" />
+                
+                {/* Bezel Insert (Deep Ceramic High-Gloss Black Ring) */}
+                <circle cx="225" cy="225" r="62.5" fill="#101012" stroke="#2c2c2e" strokeWidth="1.5" />
+                
+                {/* Inner gold security ring */}
+                <circle cx="225" cy="225" r="51.5" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
+
+                {/* Bezel Markings (Polished Gold Numerals & Scale) */}
+                <circle cx="225" cy="225" r="57" fill="none" stroke="url(#gold-grad)" strokeWidth="2.5" strokeDasharray="1, 8.35" />
+                
+                {/* Luminous pearl triangle at 12hr */}
+                <polygon points="225,167 220,174 230,174" fill="url(#gold-grad)" />
+                <circle cx="225" cy="172" r="1.8" fill="#e2ffd5" stroke="#7a5f15" strokeWidth="0.5" />
+
+                {/* 15, 30, 45 indicators with realistic typography */}
+                <text x="277" y="227.5" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif" fill="#ffffff" textAnchor="middle">15</text>
+                <text x="225" y="279" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif" fill="#ffffff" textAnchor="middle">30</text>
+                <text x="173" y="227.5" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif" fill="#ffffff" textAnchor="middle">45</text>
+                
+                {/* Ceramic radial reflection glare overlay */}
+                <path d="M 180,180 A 62.5,62.5 0 0,1 270,180" fill="none" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="5" />
               </g>
             </svg>
           </motion.div>
@@ -288,14 +350,17 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              {/* Semi-transparent blue glass with reflection glare */}
-              <circle cx="225" cy="225" r="49" fill="rgba(150, 210, 255, 0.08)" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="0.5" />
-              {/* Glare 1 */}
-              <path d="M 185,185 C 200,165 250,165 265,185 C 255,180 195,180 185,185 Z" fill="rgba(255, 255, 255, 0.3)" />
-              {/* Glare 2 (Diagonal Shine) */}
-              <path d="M 190,260 Q 225,240 260,260 Q 225,250 190,260 Z" fill="rgba(255, 255, 255, 0.15)" />
-              {/* Curved border shadow/light edge */}
-              <circle cx="225" cy="225" r="48.5" fill="none" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1" />
+              {/* Semi-transparent double-domed sapphire crystal with luxury blue AR coating sheen */}
+              <circle cx="225" cy="225" r="49" fill="rgba(66, 133, 244, 0.04)" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="0.5" />
+              {/* Blue coating refraction ring */}
+              <circle cx="225" cy="225" r="48.5" fill="none" stroke="rgba(66, 133, 244, 0.25)" strokeWidth="1.5" />
+
+              {/* Realistic curved 3D reflections (key light glares) */}
+              <path d="M 183,183 C 205,155 245,155 267,183 C 252,175 198,175 183,183 Z" fill="rgba(255, 255, 255, 0.35)" />
+              {/* Soft diagonal highlight sweep */}
+              <path d="M 184,250 C 210,215 240,215 266,250 C 245,235 205,235 184,250 Z" fill="rgba(255, 255, 255, 0.15)" />
+              {/* Glass edge refraction ring */}
+              <circle cx="225" cy="225" r="47.5" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1" />
             </svg>
           </motion.div>
 
@@ -310,38 +375,54 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-dial" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="6" stdDeviation="4" floodColor="#000" floodOpacity="0.4" />
-              </filter>
-              <g filter="url(#shadow-dial)">
-                {/* Main Dial Plate */}
-                <circle cx="225" cy="225" r="48" fill="#121214" stroke="#252528" strokeWidth="0.5" />
+              <g filter="url(#real-shadow)">
+                {/* Main Dial Plate with high-end Slate Sunburst texture */}
+                <circle cx="225" cy="225" r="48.5" fill="url(#dial-sunburst)" stroke="#1a1a1c" strokeWidth="0.75" />
                 
-                {/* Dial Concentric Circles Texture */}
-                <circle cx="225" cy="225" r="42" fill="none" stroke="#1d1d21" strokeWidth="1" />
-                <circle cx="225" cy="225" r="35" fill="none" stroke="#1d1d21" strokeWidth="0.75" />
+                {/* Concentric guilloche texture rings */}
+                <circle cx="225" cy="225" r="41" fill="none" stroke="#2a2a2e" strokeWidth="0.5" />
+                <circle cx="225" cy="225" r="33" fill="none" stroke="#2a2a2e" strokeWidth="0.5" opacity="0.7" />
 
-                {/* Dial Gold Markers (Hours) */}
-                {/* 12, 1, 2, 3... */}
-                <rect x="223.5" y="180" width="3" height="8" rx="0.5" fill="url(#gold-grad)" />
-                <rect x="223.5" y="262" width="3" height="8" rx="0.5" fill="url(#gold-grad)" />
-                <rect x="180" y="223.5" width="8" height="3" rx="0.5" fill="url(#gold-grad)" />
-                {/* 3 O'clock date slot instead of marker */}
-                <rect x="255" y="220" width="14" height="10" rx="1" fill="#000" stroke="url(#gold-grad)" strokeWidth="0.5" />
-                {/* Other hours */}
-                <g transform="rotate(30, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
-                <g transform="rotate(60, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
-                <g transform="rotate(120, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
-                <g transform="rotate(150, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
-                <g transform="rotate(210, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
-                <g transform="rotate(240, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
-                <g transform="rotate(300, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
-                <g transform="rotate(330, 225, 225)"><rect x="224" y="181" width="2" height="6" fill="url(#gold-grad)" /></g>
+                {/* Sub-seconds outer railway track */}
+                <circle cx="225" cy="225" r="45" fill="none" stroke="rgba(197, 168, 128, 0.3)" strokeWidth="0.8" strokeDasharray="0.5, 1.85" />
+
+                {/* Hand-Applied 3D Gold Hour Indexes (Faceted layout) */}
+                {/* Each hour marker has a bright side and shadow side to make them look 3D and metal */}
+                {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(angle => {
+                  if (angle === 90) return null; // Date window sitting here
+                  return (
+                    <g transform={`rotate(${angle}, 225, 225)`} key={angle}>
+                      {/* Left facet (bright) */}
+                      <rect x="224" y="180" width="1" height="8" fill="#fff5d0" />
+                      {/* Right facet (shadow) */}
+                      <rect x="225" y="180" width="1" height="8" fill="#a88523" />
+                      {/* Luminous dots at tips of markers */}
+                      <circle cx="225" cy="189" r="0.8" fill="#e2ffd5" stroke="#7a5f15" strokeWidth="0.25" />
+                    </g>
+                  );
+                })}
+                
+                {/* Double marker at 12 o'clock */}
+                <g transform="rotate(0, 225, 225)">
+                  <rect x="221.5" y="180" width="1" height="8" fill="#fff5d0" />
+                  <rect x="222.5" y="180" width="1" height="8" fill="#a88523" />
+                  <rect x="226.5" y="180" width="1" height="8" fill="#fff5d0" />
+                  <rect x="227.5" y="180" width="1" height="8" fill="#a88523" />
+                </g>
+
+                {/* 3 O'clock Beveled Date Window Slot */}
+                <g>
+                  {/* Outer beveled frame */}
+                  <rect x="254.5" y="219.5" width="14" height="11" rx="0.5" fill="none" stroke="url(#gold-grad)" strokeWidth="0.75" />
+                  {/* Inner drop shadow slot cutout */}
+                  <rect x="255.5" y="220.5" width="12" height="9" fill="#000000" />
+                </g>
                 
                 {/* Branding text */}
-                <text x="225" y="206" fontSize="6.5" fill="url(#gold-grad)" fontWeight="bold" textAnchor="middle" letterSpacing="1.5">CHRONOS</text>
-                <text x="225" y="212" fontSize="3.5" fill="#8e8e93" textAnchor="middle">SWISS MADE</text>
-                <text x="225" y="248" fontSize="4.5" fill="#c5a880" textAnchor="middle" letterSpacing="0.5">AUTOMATIC</text>
+                <text x="225" y="206" fontSize="6.5" fill="url(#gold-grad)" fontWeight="bold" fontFamily="sans-serif" textAnchor="middle" letterSpacing="1.2">CHRONOS</text>
+                <text x="225" y="211" fontSize="3.5" fill="#8e8e93" fontFamily="sans-serif" textAnchor="middle">OFFICIALLY CERTIFIED</text>
+                <text x="225" y="248" fontSize="4.5" fill="#c5a880" fontFamily="sans-serif" textAnchor="middle" letterSpacing="0.5">AUTOMATIC</text>
+                <text x="225" y="254" fontSize="3" fill="#8e8e93" fontFamily="sans-serif" textAnchor="middle">SWISS MADE</text>
               </g>
             </svg>
           </motion.div>
@@ -357,37 +438,41 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-hands" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="1" dy="4" stdDeviation="3" floodColor="#000" floodOpacity="0.5" />
-              </filter>
-              <g filter="url(#shadow-hands)">
-                {/* Central Pin */}
-                <circle cx="225" cy="225" r="4.5" fill="url(#gold-grad)" stroke="#553f10" strokeWidth="0.5" />
+              <g filter="url(#real-shadow)">
+                {/* Central pin base */}
+                <circle cx="225" cy="225" r="5" fill="url(#gold-grad)" stroke="#444" strokeWidth="0.5" />
 
-                {/* Hour Hand (Pointing at 10) */}
+                {/* Hour Hand (Pointing at 10) - Faceted 3D */}
                 <g transform="rotate(-60, 225, 225)">
-                  <path d="M 223,225 L 223,197 L 225,192 L 227,197 L 227,225 Z" fill="url(#gold-grad)" stroke="#553f10" strokeWidth="0.5" />
-                  {/* Luminous Fill */}
-                  <rect x="224.2" y="200" width="1.6" height="20" fill="#e0ffd0" rx="0.5" />
+                  {/* Left Facet (Reflecting key light) */}
+                  <path d="M 225,225 L 221,225 L 223,193 L 225,190 Z" fill="#fff6d6" />
+                  {/* Right Facet (In shadow) */}
+                  <path d="M 225,225 L 229,225 L 227,193 L 225,190 Z" fill="#a37e1a" />
+                  {/* Luminous center stripe */}
+                  <path d="M 224.3,220 L 224.3,196 C 224.3,195 225.7,195 225.7,196 L 225.7,220 Z" fill="#e2ffd5" opacity="0.9" />
                 </g>
 
-                {/* Minute Hand (Pointing at 2) */}
+                {/* Minute Hand (Pointing at 2) - Faceted 3D */}
                 <g transform="rotate(60, 225, 225)">
-                  <path d="M 223.5,225 L 223.5,185 L 225,178 L 226.5,185 L 226.5,225 Z" fill="url(#gold-grad)" stroke="#553f10" strokeWidth="0.5" />
-                  {/* Luminous Fill */}
-                  <rect x="224.4" y="188" width="1.2" height="32" fill="#e0ffd0" rx="0.5" />
+                  {/* Left Facet (Reflecting key light) */}
+                  <path d="M 225,225 L 222,225 L 223.5,182 L 225,178 Z" fill="#fff6d6" />
+                  {/* Right Facet (In shadow) */}
+                  <path d="M 225,225 L 228,225 L 226.5,182 L 225,178 Z" fill="#a37e1a" />
+                  {/* Luminous center stripe */}
+                  <path d="M 224.4,220 L 224.4,186 C 224.4,185 225.6,185 225.6,186 L 225.6,220 Z" fill="#e2ffd5" opacity="0.9" />
                 </g>
 
-                {/* Sweep Second Hand (Pointing at 5) */}
+                {/* Sweep Second Hand (Crimson Red with round balance counterweight) */}
                 <g transform="rotate(150, 225, 225)">
-                  <line x1="225" y1="240" x2="225" y2="175" stroke="#d4af37" strokeWidth="0.75" />
-                  {/* Counterweight circle */}
-                  <circle cx="225" cy="235" r="2.5" fill="url(#gold-grad)" />
-                  <circle cx="225" cy="180" r="1.5" fill="#ef4444" />
+                  <line x1="225" y1="238" x2="225" y2="173" stroke="#e63946" strokeWidth="0.8" />
+                  {/* Round counterweight with gold pivot cap */}
+                  <circle cx="225" cy="234" r="2.5" fill="none" stroke="#e63946" strokeWidth="0.75" />
+                  <circle cx="225" cy="180" r="1.5" fill="#e2ffd5" stroke="#e63946" strokeWidth="0.5" />
                 </g>
                 
-                {/* Center cap */}
-                <circle cx="225" cy="225" r="1.5" fill="#fff" />
+                {/* Polished center cap ring */}
+                <circle cx="225" cy="225" r="2" fill="#ffffff" />
+                <circle cx="225" cy="225" r="0.75" fill="#000" />
               </g>
             </svg>
           </motion.div>
@@ -403,30 +488,25 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-date" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="5" stdDeviation="3" floodColor="#000" floodOpacity="0.45" />
-              </filter>
-              <g filter="url(#shadow-date)">
+              <g filter="url(#real-shadow)">
                 {/* Date Wheel Outer Ring */}
-                <circle cx="225" cy="225" r="47.5" fill="none" stroke="#252528" strokeWidth="1" />
-                {/* Main flat white/silver ring */}
-                <path d="M 225,177.5 
-                         A 47.5,47.5 0 1,1 224.9,177.5 
-                         L 224.9,188.5 
-                         A 36.5,36.5 0 1,0 225,188.5 Z" 
-                      fill="#e4e4e7" stroke="#b5b5ba" strokeWidth="0.5" />
-                {/* Numbers printed around the ring */}
-                <text x="261" y="228" fontSize="6.5" fill="#18181b" fontWeight="bold" textAnchor="middle">24</text>
-                <text x="259" y="238" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">25</text>
-                <text x="254" y="247" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">26</text>
-                <text x="246" y="255" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">27</text>
-                <text x="237" y="260" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">28</text>
+                <circle cx="225" cy="225" r="47.5" fill="none" stroke="#2a2a2e" strokeWidth="0.8" />
+                {/* Main flat white/silver brushed metal disc ring */}
+                <path d="M 225,176 
+                         A 49,49 0 1,1 224.9,176 
+                         L 224.9,188 
+                         A 37,37 0 1,0 225,188 Z" 
+                      fill="url(#radial-steel)" stroke="#b5b5ba" strokeWidth="0.5" />
                 
-                <text x="260" y="218" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">23</text>
-                <text x="256" y="208" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">22</text>
-                <text x="249" y="199" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">21</text>
-                <text x="240" y="193" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">20</text>
-                <text x="229" y="190" fontSize="6.5" fill="#a1a1aa" textAnchor="middle">19</text>
+                {/* Date Numerals stamped cleanly */}
+                <text x="261.5" y="228" fontSize="7" fontWeight="bold" fontFamily="monospace" fill="#111112" textAnchor="middle">24</text>
+                <text x="259.5" y="238" fontSize="7" fontWeight="bold" fontFamily="monospace" fill="#7d7d85" textAnchor="middle">25</text>
+                <text x="254" y="247" fontSize="7" fontWeight="bold" fontFamily="monospace" fill="#a1a1aa" textAnchor="middle">26</text>
+                <text x="246" y="255" fontSize="7" fontWeight="bold" fontFamily="monospace" fill="#a1a1aa" textAnchor="middle">27</text>
+                
+                <text x="260" y="218" fontSize="7" fontWeight="bold" fontFamily="monospace" fill="#7d7d85" textAnchor="middle">23</text>
+                <text x="255.5" y="208" fontSize="7" fontWeight="bold" fontFamily="monospace" fill="#a1a1aa" textAnchor="middle">22</text>
+                <text x="249" y="199" fontSize="7" fontWeight="bold" fontFamily="monospace" fill="#a1a1aa" textAnchor="middle">21</text>
               </g>
             </svg>
           </motion.div>
@@ -442,63 +522,63 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-movement" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="8" stdDeviation="6" floodColor="#000" floodOpacity="0.5" />
-              </filter>
-              <g filter="url(#shadow-movement)">
-                {/* Main Movement Plate */}
-                <circle cx="225" cy="225" r="46.5" fill="url(#steel-grad)" stroke="#222" strokeWidth="1" />
-                <circle cx="225" cy="225" r="45" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
+              <g filter="url(#real-shadow)">
+                {/* Main Movement Plate (Brushed steel with perlage circular grains) */}
+                <circle cx="225" cy="225" r="46.5" fill="url(#steel-grad)" stroke="#1a1a1c" strokeWidth="1" />
+                {/* Gear ring track */}
+                <circle cx="225" cy="225" r="46" fill="none" stroke="#222" strokeWidth="1" strokeDasharray="1.2, 0.8" />
 
-                {/* Outer gearing teeth */}
-                <circle cx="225" cy="225" r="46" fill="none" stroke="#4b5563" strokeWidth="1" strokeDasharray="1.5, 1" />
-
-                {/* Brass Bridge plates */}
-                <path d="M 195,195 C 220,185 240,195 265,210 L 265,245 C 240,255 210,245 195,230 Z" fill="url(#brass-grad)" stroke="#4a3b10" strokeWidth="0.5" />
-                {/* Circular skeleton cutouts */}
-                <circle cx="205" cy="215" r="8" fill="#18181b" stroke="#4a3b10" strokeWidth="0.5" />
-                <circle cx="245" cy="230" r="10" fill="#18181b" stroke="#4b5563" strokeWidth="0.5" />
-
-                {/* Interlocking Gears */}
-                {/* Gear 1 (Gold/Brass) */}
-                <g transform="rotate(25, 205, 215)">
-                  <circle cx="205" cy="215" r="12" fill="url(#gold-grad)" stroke="#7a5b10" strokeWidth="0.5" />
-                  <circle cx="205" cy="215" r="12" fill="none" stroke="#222" strokeWidth="1.5" strokeDasharray="1.5, 1" />
-                  {/* spokes */}
-                  <line x1="193" y1="215" x2="217" y2="215" stroke="#7a5b10" strokeWidth="1" />
-                  <line x1="205" y1="203" x2="205" y2="227" stroke="#7a5b10" strokeWidth="1" />
-                  <circle cx="205" cy="215" r="2.5" fill="#3f3f46" />
-                </g>
-
-                {/* Gear 2 (Silver Steel) */}
-                <g transform="rotate(-40, 235, 205)">
-                  <circle cx="235" cy="205" r="16" fill="url(#steel-grad)" stroke="#444" strokeWidth="0.5" />
-                  <circle cx="235" cy="205" r="16" fill="none" stroke="#222" strokeWidth="1.5" strokeDasharray="2, 1" />
-                  {/* spokes */}
-                  <line x1="219" y1="205" x2="251" y2="205" stroke="#444" strokeWidth="1" />
-                  <line x1="235" y1="189" x2="235" y2="221" stroke="#444" strokeWidth="1" />
-                  <circle cx="235" cy="205" r="3.5" fill="url(#gold-grad)" />
-                </g>
-
-                {/* Escapement & Balance Wheel (Golden and rotating-looking) */}
-                <circle cx="215" cy="245" r="14" fill="none" stroke="url(#gold-grad)" strokeWidth="1.5" />
-                <line x1="201" y1="245" x2="229" y2="245" stroke="url(#gold-grad)" strokeWidth="1.5" />
-                <line x1="215" y1="231" x2="215" y2="259" stroke="url(#gold-grad)" strokeWidth="1.5" />
-                <circle cx="215" cy="245" r="3.5" fill="#ef4444" /> {/* Synthetic Ruby Pivot */}
-
-                {/* Small copper winding wheels */}
-                <circle cx="250" cy="250" r="7" fill="url(#brass-grad)" stroke="#444" strokeWidth="0.5" strokeDasharray="1,1" />
-
-                {/* Blued steel screws */}
-                <circle cx="192" cy="192" r="1.8" fill="#1e3a8a" stroke="#2563eb" strokeWidth="0.25" />
-                <line x1="191" y1="192" x2="193" y2="192" stroke="#000" strokeWidth="0.4" />
+                {/* Satin-Brushed Gold Bridges (Cutouts showing inner wheels) */}
+                <path d="M 194,194 C 218,183 242,192 266,208 L 266,246 C 242,256 210,246 194,228 Z" fill="url(#brass-grad)" stroke="#5c430e" strokeWidth="0.5" />
                 
-                <circle cx="255" cy="195" r="1.8" fill="#1e3a8a" stroke="#2563eb" strokeWidth="0.25" />
-                <line x1="254" y1="195" x2="256" y2="195" stroke="#000" strokeWidth="0.4" />
+                {/* Geneva stripes (Côtes de Genève) simulated on gold bridge */}
+                <line x1="202" y1="190" x2="202" y2="240" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2.5" />
+                <line x1="215" y1="190" x2="215" y2="245" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2.5" />
+                <line x1="228" y1="190" x2="228" y2="250" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2.5" />
+                <line x1="241" y1="190" x2="241" y2="252" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2.5" />
 
-                {/* Adjuster Regulator */}
-                <path d="M 215,245 L 200,262 L 196,260 L 213,243 Z" fill="url(#steel-grad)" />
-                <circle cx="198" cy="261" r="1.2" fill="url(#steel-grad)" />
+                {/* Skeleton hollow wells */}
+                <circle cx="205" cy="215" r="8.5" fill="#0d0d0f" stroke="#3a2e10" strokeWidth="1" />
+                <circle cx="245" cy="230" r="10.5" fill="#0d0d0f" stroke="#2c2c2e" strokeWidth="1" />
+
+                {/* Interlocking 3D Gears */}
+                {/* Gold Escape Wheel */}
+                <g transform="rotate(25, 205, 215)">
+                  <circle cx="205" cy="215" r="13" fill="none" stroke="url(#gold-grad)" strokeWidth="1.5" strokeDasharray="1.2, 0.8" />
+                  <circle cx="205" cy="215" r="11" fill="none" stroke="url(#gold-grad)" strokeWidth="0.5" />
+                  {/* spokes */}
+                  <line x1="193" y1="215" x2="217" y2="215" stroke="url(#gold-grad)" strokeWidth="0.8" />
+                  <line x1="205" y1="203" x2="205" y2="227" stroke="url(#gold-grad)" strokeWidth="0.8" />
+                  <circle cx="205" cy="215" r="2.5" fill="#555" stroke="#222" strokeWidth="0.5" />
+                </g>
+
+                {/* Silver Winding Gear */}
+                <g transform="rotate(-40, 235, 205)">
+                  <circle cx="235" cy="205" r="17" fill="none" stroke="url(#steel-grad)" strokeWidth="2" strokeDasharray="2, 0.8" />
+                  <circle cx="235" cy="205" r="14" fill="none" stroke="url(#steel-grad)" strokeWidth="0.5" />
+                  <line x1="218" y1="205" x2="252" y2="205" stroke="url(#steel-grad)" strokeWidth="0.8" />
+                  <line x1="235" y1="188" x2="235" y2="222" stroke="url(#steel-grad)" strokeWidth="0.8" />
+                  <circle cx="235" cy="205" r="3.5" fill="url(#gold-grad)" stroke="#222" strokeWidth="0.5" />
+                </g>
+
+                {/* Glowing Ruby Bearing (Incabloc Jewel) */}
+                <circle cx="215" cy="245" r="15" fill="none" stroke="url(#gold-grad)" strokeWidth="1.2" />
+                <line x1="200" y1="245" x2="230" y2="245" stroke="url(#gold-grad)" strokeWidth="1" />
+                <line x1="215" y1="230" x2="215" y2="260" stroke="url(#gold-grad)" strokeWidth="1" />
+                
+                {/* Gemstone ruby glass core */}
+                <circle cx="215" cy="245" r="4.5" fill="url(#ruby-grad)" stroke="#000" strokeWidth="0.5" />
+                <circle cx="213.5" cy="243.5" r="1.2" fill="#fff" opacity="0.6" /> {/* Jewel glint */}
+
+                {/* Blued Steel Screws (Holding plate) */}
+                {[{cx: 192, cy: 192}, {cx: 255, cy: 195}, {cx: 252, cy: 248}].map((s, i) => (
+                  <g key={i}>
+                    {/* Deep blued metal head */}
+                    <circle cx={s.cx} cy={s.cy} r="2.2" fill="#1e40af" stroke="#2563eb" strokeWidth="0.25" />
+                    {/* Flathead screw slot */}
+                    <line x1={s.cx - 1.5} y1={s.cy - 0.5} x2={s.cx + 1.5} y2={s.cy + 0.5} stroke="#000" strokeWidth="0.6" />
+                  </g>
+                ))}
               </g>
             </svg>
           </motion.div>
@@ -514,42 +594,51 @@ export default function WatchExplodedView() {
             }}
           >
             <svg width="450" height="450" viewBox="0 0 450 450" fill="none">
-              <filter id="shadow-back" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="12" stdDeviation="8" floodColor="#000" floodOpacity="0.65" />
-              </filter>
-              <g filter="url(#shadow-back)">
-                {/* Outer Brushed Backing */}
-                <circle cx="225" cy="225" r="74" fill="url(#steel-grad)" stroke="#1a1a1c" strokeWidth="1" />
-                {/* Threaded grooves */}
-                <circle cx="225" cy="225" r="71" fill="none" stroke="#28282b" strokeWidth="0.5" />
-                <circle cx="225" cy="225" r="68" fill="none" stroke="#1d1d1f" strokeWidth="1" />
-                {/* Screw slots for opener */}
-                <rect x="222" y="152" width="6" height="4" fill="#000" />
-                <rect x="222" y="294" width="6" height="4" fill="#000" />
-                <rect x="152" y="222" width="4" height="6" fill="#000" />
-                <rect x="294" y="222" width="4" height="6" fill="#000" />
-
-                {/* Exhibition window border */}
-                <circle cx="225" cy="225" r="48" fill="url(#radial-steel)" stroke="#1c1c1e" strokeWidth="1" />
-                {/* Sapphire exhibition window */}
-                <circle cx="225" cy="225" r="38" fill="rgba(100, 150, 255, 0.05)" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" />
+              <g filter="url(#real-shadow)">
+                {/* Outer Brushed Steel Back Cover */}
+                <circle cx="225" cy="225" r="75" fill="url(#steel-grad)" stroke="#1a1a1c" strokeWidth="1.2" />
                 
-                {/* Rotor (visible through window) */}
-                <path d="M 225,225 M 225,190 A 35,35 0 0,1 260,225 L 225,225 Z" fill="url(#gold-grad)" opacity="0.8" />
-                <circle cx="225" cy="225" r="5" fill="url(#steel-grad)" />
+                {/* Opener grooves (six milled slots) */}
+                <circle cx="225" cy="225" r="70.5" fill="none" stroke="#1d1d1f" strokeWidth="1.5" />
+                {[0, 60, 120, 180, 240, 300].map(angle => (
+                  <rect key={angle} x="221.5" y="150" width="7" height="4.5" fill="#0c0c0d" stroke="#2c2c2e" strokeWidth="0.5" transform={`rotate(${angle}, 225, 225)`} />
+                ))}
 
-                {/* Engraving Text */}
+                {/* Exhibition Sapphire Window Ring Frame */}
+                <circle cx="225" cy="225" r="48" fill="url(#radial-steel)" stroke="#1a1a1c" strokeWidth="1.2" />
+                <circle cx="225" cy="225" r="46.5" fill="none" stroke="#ffffff" strokeWidth="0.5" opacity="0.3" />
+
+                {/* 3D Gold Automatic Rotor (weighted self-winding oscillating weight) */}
+                <g>
+                  {/* Heavy outer weight block */}
+                  <path d="M 225,225 M 225,187 A 38,38 0 0,1 262,225 L 225,225 Z" fill="url(#gold-grad)" stroke="#7a550d" strokeWidth="0.5" opacity="0.9" />
+                  {/* Côtes de Genève stripes on rotor */}
+                  <path d="M 225,187 A 38,38 0 0,1 262,225 L 225,225 Z" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" strokeDasharray="3, 6" />
+                  {/* Central steel rotor pivot bearing */}
+                  <circle cx="225" cy="225" r="7" fill="url(#steel-grad)" stroke="#222" strokeWidth="0.5" />
+                  <circle cx="225" cy="225" r="4" fill="none" stroke="#666" strokeWidth="0.5" />
+                  {/* Small bearings balls inside pivot */}
+                  {[0, 60, 120, 180, 240, 300].map(angle => (
+                    <circle key={angle} cx="225" cy="222.2" r="0.75" fill="#111" transform={`rotate(${angle}, 225, 225)`} />
+                  ))}
+                </g>
+
+                {/* Sapphire exhibition flat glass window with specular glare */}
+                <circle cx="225" cy="225" r="38" fill="rgba(66, 133, 244, 0.03)" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" />
+                <path d="M 197,203 Q 225,190 253,203 Q 225,198 197,203 Z" fill="rgba(255, 255, 255, 0.15)" />
+
+                {/* Laser-Engraved Markings */}
                 <path id="engrave-path-1" d="M 167,225 A 58,58 0 0,1 283,225" fill="none" />
-                <text fontSize="5.5" fontWeight="bold" fill="#71717a">
+                <text fontSize="5.5" fontWeight="bold" fontFamily="monospace" fill="#5c5c61" letterSpacing="0.2">
                   <textPath href="#engrave-path-1" startOffset="50%" textAnchor="middle">
                     CHRONOS WATCH CO. • 10 ATM WATER RESISTANT
                   </textPath>
                 </text>
                 
                 <path id="engrave-path-2" d="M 283,225 A 58,58 0 0,1 167,225" fill="none" />
-                <text fontSize="5.5" fontWeight="bold" fill="#71717a">
+                <text fontSize="5.5" fontWeight="bold" fontFamily="monospace" fill="#5c5c61" letterSpacing="0.2">
                   <textPath href="#engrave-path-2" startOffset="50%" textAnchor="middle">
-                    SAPPHIRE CRYSTAL • SWISS AUTOMATIC • N° 0042/1000
+                    SAPPHIRE GLASS • SWISS AUTOMATIC • N° 0042/1000
                   </textPath>
                 </text>
               </g>
